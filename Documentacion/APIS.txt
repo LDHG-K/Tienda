@@ -1,0 +1,44 @@
+Pruebas de testeo para Quda
+
+http://localhost:8080/Usuarios :: Post
+
+{
+    "userNickName":"Jeisson",
+    "userPassword":"12345678",
+    "person":{
+        "fkNamesIdentificationId":1,
+        "personBirthdate":"2000-07-02",
+        "personCellphone":"316565622",
+        "personCreationDate":"2020-05-23",
+        "personEmail":"jei2@gmail.com",
+        "personIdentification":"1005840693",
+        "personLastname":"Cortes",
+        "personName":"Jeisson",
+        "cityId":446,
+        "roleId":"1"
+    }
+
+}
+
+http://localhost:8080/Usuarios/Jeisson :: Get
+
+---------------------------------------------------
+http://localhost:8080/Personas :: Put
+
+{       
+    "personId":9,
+    "fkNamesIdentificationId":1,
+    "personBirthdate":"2000-07-02",
+    "personCellphone":"316565622",
+    "personCreationDate":"2020-05-23",
+    "personEmail":"jei2@gmail.com",
+    "personIdentification":"1005840693",
+    "personLastname":"Cortes",
+    "personName":"Luisito",
+    "cityId":446,
+    "roleId":"1"
+}
+
+--------------------------------------------------
+http://localhost:8080/Productos/Categoria/3 ::Get
+

@@ -1,0 +1,18 @@
+1-10 estados de usuario
+
+1- activo
+2- inactivo
+3- eliminado
+4- bloqueado
+
+
+11-20 estados de facturas
+
+11- En espera
+12- Pagada en proceso de bodega
+13- Pagada en proceso de envio
+14- Pagada exitosamente
+14- Cancelada en bodega
+15- Devolucion en proceso de envio
+16- Devolucion en proceso de pago
+17- Devolucion concretada
