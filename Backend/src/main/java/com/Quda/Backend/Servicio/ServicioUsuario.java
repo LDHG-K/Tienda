@@ -5,6 +5,7 @@ import com.Quda.Backend.Entidades.User;
 import com.Quda.Backend.Repositorio.JpaPersona;
 import com.Quda.Backend.Repositorio.JpaUsuario;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class ServicioUsuario {
+
 
     private final JpaUsuario jpaUsuario;
     private final JpaPersona jpaPersona;
