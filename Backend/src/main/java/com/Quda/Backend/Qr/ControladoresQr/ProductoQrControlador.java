@@ -1,5 +1,6 @@
 package com.Quda.Backend.Qr.ControladoresQr;
 import com.Quda.Backend.Qr.ServiciosQr.ServicioQrProducto;
+import com.google.zxing.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/Qr")
@@ -33,6 +36,15 @@ public class ProductoQrControlador {
             throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(QRCodeGenerator.getQRCodeImage(codeText, width, height));
     }
+
+    @GetMapping(value = "/read")
+    public ResponseEntity<HttpStatus> readQRCode() throws NotFoundException, IOException {
+        QRCodeGenerator.readQrImage();
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+
 }
 
 
