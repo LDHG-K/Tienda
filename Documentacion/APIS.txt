@@ -1,9 +1,11 @@
-Pruebas de testeo para Quda
+===============================================
+PRUEBAS DE TESTEO PARA APLICACION QUDA
+===============================================
 
 http://localhost:8080/Usuarios :: Post
 
 {
-    "userNickName":"Jeisson",
+    "userNickName":"Prueba",
     "userPassword":"12345678",
     "person":{
         "fkNamesIdentificationId":1,
@@ -12,15 +14,48 @@ http://localhost:8080/Usuarios :: Post
         "personCreationDate":"2020-05-23",
         "personEmail":"jei2@gmail.com",
         "personIdentification":"1005840693",
-        "personLastname":"Cortes",
-        "personName":"Jeisson",
+        "personLastname":"asdfgh",
+        "personName":"Jqwerty",
         "cityId":446,
         "roleId":"1"
     }
 
 }
 
-http://localhost:8080/Usuarios/Jeisson :: Get
+http://localhost:8080/Usuarios/Prueba :: Get
+
+{
+
+}
+
+http://localhost:8080/Usuarios :: Put
+
+{
+    "userNickName":"Prueba",
+    "userPassword":"123456789",
+    "person":{
+        "fkNamesIdentificationId":1,
+        "personBirthdate":"2000-08-02",
+        "personCellphone":"316575622",
+        "personCreationDate":"2020-05-23",
+        "personEmail":"jei3@gmail.com",
+        "personIdentification":"1005840695",
+        "personLastname":"asdfgh",
+        "personName":"Jqwerty",
+        "cityId":447,
+        "roleId":"1"
+    }
+
+}
+
+Nota de mantenimiento: Falta integrar el Cambio de nickname
+por aparte.
+
+http://localhost:8080/Usuarios/Prueba :: Delete
+
+{
+
+}
 
 ---------------------------------------------------
 http://localhost:8080/Personas :: Put

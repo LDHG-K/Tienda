@@ -55,10 +55,10 @@ public class UsuarioControlador {
         }
         return new ResponseEntity(status);
     }
-    @PutMapping
-    public ResponseEntity<HttpStatus> editarUsuarios (@Valid @RequestBody User user){
+    @PutMapping ("/{id}")
+    public ResponseEntity<HttpStatus> editarUsuarios (@Valid @RequestBody User user, @PathVariable ("id") String id){
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        Optional<User> usuario =servicioUsuario.editarUsuario(user);
+        Optional<User> usuario =servicioUsuario.editarUsuario(user,id);
         if (!usuario.isEmpty()){
             status= HttpStatus.OK;
         }

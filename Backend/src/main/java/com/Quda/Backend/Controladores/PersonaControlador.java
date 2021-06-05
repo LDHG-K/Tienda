@@ -24,10 +24,10 @@ public class PersonaControlador {
 
     private final ServicioPersona servicioPersona;
 
-    @PutMapping
-    public ResponseEntity<HttpStatus> darUsuario (@Valid @RequestBody Person person){
+    @PutMapping ("/{id}")
+    public ResponseEntity<HttpStatus> editarPersona (@Valid @RequestBody Person person, @PathVariable ("id") String id){
         HttpStatus status = HttpStatus.OK;
-        servicioPersona.editarPersona(person);
+        servicioPersona.editarPersona(person , id);
         return new ResponseEntity(status);
     }
     @GetMapping("/{id}")

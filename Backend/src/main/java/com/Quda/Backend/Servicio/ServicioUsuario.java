@@ -6,6 +6,7 @@ import com.Quda.Backend.Repositorio.JpaPersona;
 import com.Quda.Backend.Repositorio.JpaUsuario;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.postgresql.util.PSQLException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,8 +50,18 @@ public class ServicioUsuario {
         return jpaUsuario.findAll();
     }
 
-    public Optional<User> editarUsuario(User usuario){
-        return Optional.ofNullable(jpaUsuario.save(usuario));
+    @Transactional
+    public Optional<User> editarUsuario(User usuario, String id)
+    {
+        try{
+            jpaUsuario.cambiarIdUsuario(usuario.getUserNickName(),id);
+        }
+        catch ( Exception e){
+
+        }
+        User temp = buscarUsuario(usuario.getUserNickName()).get();
+        temp.setUserPassword(usuario.getUserPassword());
+        return Optional.ofNullable(jpaUsuario.save(temp));
     }
 
     public Optional<User> validarUsuario(String id){
