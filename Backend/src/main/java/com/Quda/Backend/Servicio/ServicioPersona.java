@@ -17,17 +17,20 @@ public class ServicioPersona {
     private final JpaPersona jpaPersona;
     private final ServicioUsuario servicioUsuario;
 
-    public Optional<Person> buscarPersona(Integer id){
-        Optional<Person> buscado = jpaPersona.findById(id);
+    public Optional<Person> buscarPersona(String id){
+        Optional<User> buscado = servicioUsuario.buscarUsuario(id);
         if (buscado.isEmpty()){throw new RuntimeException("No encontrado");}
-        return buscado;
+        return Optional.of(buscado.get().getPerson());
     }
-    public void eliminarPersona(Integer id){
+
+    /*public void eliminarPersona(Integer id, String id){
 
         try{jpaPersona.delete(buscarPersona(id).get());}
         catch (RuntimeException e){throw new RuntimeException("Persona no existe");}
 
     }
+
+     */
 
     public List<Person> enlistarPersonas(){
         return jpaPersona.findAll();
@@ -36,9 +39,15 @@ public class ServicioPersona {
     public Person editarPersona(Person personaEditada, String id){
 
         Optional<User> usuario = servicioUsuario.buscarUsuario(id);
-        Integer idPersona = usuario.get().getPersonId();
-        personaEditada.setPersonId(idPersona);
-        usuario.get().setPerson(personaEditada);
+
+        Person personaAntigua = usuario.get().getPerson();
+
+        personaEditada.setPersonId(personaAntigua.getPersonId());
+        personaEditada.setPersonCreationDate(personaAntigua.getPersonCreationDate());
+        personaEditada.setRoleId(personaAntigua.getRoleId());
+
+        System.out.println( personaEditada.toString());
+
 
         return jpaPersona.save(personaEditada);
     }

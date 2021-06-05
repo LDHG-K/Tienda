@@ -31,14 +31,10 @@ public class PersonaControlador {
         return new ResponseEntity(status);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Person> darPersona(@PathVariable ("id") Integer id){
+    public ResponseEntity<Person> darPersona(@PathVariable ("id") String id){
         return new ResponseEntity(servicioPersona.buscarPersona(id).get(),HttpStatus.ACCEPTED);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> eliminarPersona(@PathVariable ("id") Integer id){
-        servicioPersona.eliminarPersona(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
+
 
 
 
