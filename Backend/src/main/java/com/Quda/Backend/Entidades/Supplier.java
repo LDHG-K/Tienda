@@ -1,20 +1,23 @@
 package com.Quda.Backend.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
-/**
- * The persistent class for the supplier database table.
- * 
- */
+@Data
 @Entity
-@NamedQuery(name="Supplier.findAll", query="SELECT s FROM Supplier s")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Supplier implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="supplier_id")
 	private Integer supplierId;
 
@@ -22,48 +25,8 @@ public class Supplier implements Serializable {
 	private String supplierName;
 
 	//bi-directional many-to-one association to Product
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToMany(mappedBy="supplier")
 	private List<Product> products;
-
-	public Supplier() {
-	}
-
-	public Integer getSupplierId() {
-		return this.supplierId;
-	}
-
-	public void setSupplierId(Integer supplierId) {
-		this.supplierId = supplierId;
-	}
-
-	public String getSupplierName() {
-		return this.supplierName;
-	}
-
-	public void setSupplierName(String supplierName) {
-		this.supplierName = supplierName;
-	}
-
-	public List<Product> getProducts() {
-		return this.products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
-	public Product addProduct(Product product) {
-		getProducts().add(product);
-		product.setSupplier(this);
-
-		return product;
-	}
-
-	public Product removeProduct(Product product) {
-		getProducts().remove(product);
-		product.setSupplier(null);
-
-		return product;
-	}
 
 }

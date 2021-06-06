@@ -1,5 +1,5 @@
 package com.Quda.Backend.Entidades;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -11,18 +11,12 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-/**
- * The persistent class for the users database table.
- * 
- */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 

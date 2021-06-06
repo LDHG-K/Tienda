@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -19,10 +20,10 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name="persons")
-@NamedQuery(name="Person.findAll", query="SELECT p FROM Person p")
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -85,140 +86,5 @@ public class Person implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToMany(mappedBy="person")
 	private List<User> users;
-
-	public Person() {
-	}
-
-	public Integer getPersonId() {
-		return this.personId;
-	}
-
-	public void setPersonId(Integer personId) {
-		this.personId = personId;
-	}
-
-	public Integer getFkNamesIdentificationId() {
-		return this.fkNamesIdentificationId;
-	}
-
-	public void setFkNamesIdentificationId(Integer fkNamesIdentificationId) {
-		this.fkNamesIdentificationId = fkNamesIdentificationId;
-	}
-
-	public Date getPersonBirthdate() {
-		return this.personBirthdate;
-	}
-
-	public void setPersonBirthdate(Date personBirthdate) {
-		this.personBirthdate = personBirthdate;
-	}
-
-	public String getPersonCellphone() {
-		return this.personCellphone;
-	}
-
-	public void setPersonCellphone(String personCellphone) {
-		this.personCellphone = personCellphone;
-	}
-
-	public Date getPersonCreationDate() {
-		return this.personCreationDate;
-	}
-
-	public void setPersonCreationDate(Date personCreationDate) {
-		this.personCreationDate = personCreationDate;
-	}
-
-	public String getPersonEmail() {
-		return this.personEmail;
-	}
-
-	public void setPersonEmail(String personEmail) {
-		this.personEmail = personEmail;
-	}
-
-	public String getPersonIdentification() {
-		return this.personIdentification;
-	}
-
-	public void setPersonIdentification(String personIdentification) {
-		this.personIdentification = personIdentification;
-	}
-
-	public String getPersonLastname() {
-		return this.personLastname;
-	}
-
-	public void setPersonLastname(String personLastname) {
-		this.personLastname = personLastname;
-	}
-
-	public String getPersonName() {
-		return this.personName;
-	}
-
-	public void setPersonName(String personName) {
-		this.personName = personName;
-	}
-
-	public List<Bill> getBills() {
-		return this.bills;
-	}
-
-	public void setBills(List<Bill> bills) {
-		this.bills = bills;
-	}
-
-	public Bill addBill(Bill bill) {
-		getBills().add(bill);
-		bill.setPerson(this);
-
-		return bill;
-	}
-
-	public Bill removeBill(Bill bill) {
-		getBills().remove(bill);
-		bill.setPerson(null);
-
-		return bill;
-	}
-
-	public City getCity() {
-		return this.city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
-
-	public Role getRole() {
-		return this.role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public List<User> getUsers() {
-		return this.users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
-
-	public User addUser(User user) {
-		getUsers().add(user);
-		user.setPerson(this);
-
-		return user;
-	}
-
-	public User removeUser(User user) {
-		getUsers().remove(user);
-		user.setPerson(null);
-
-		return user;
-	}
 
 }
