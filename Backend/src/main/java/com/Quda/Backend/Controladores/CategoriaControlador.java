@@ -47,5 +47,9 @@ public class CategoriaControlador {
         return new HttpEntity(HttpStatus.OK) ;
     }
 
+    @PutMapping("/{id}")
+    public HttpEntity editarCategoria(@RequestBody Category categoria, @PathVariable ("id") String id){
+        return new HttpEntity(servicioCategoria.editarCategoria(categoria,id));
+    }
 
 }

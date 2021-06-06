@@ -44,8 +44,11 @@ public class ServicioCategoria {
         jpaCategoria.delete(buscada.get());
     }
 
-    public Optional<Category> editarCategoria(Category categoria){
-
+    public Optional<Category> editarCategoria(Category categoria, String categoriaAntigua){
+        Integer id = jpaCategoria.buscarIdPorCategoria(categoriaAntigua);
+        categoria.setCategoryId(id);
+        System.out.println(id);
+        return Optional.of(jpaCategoria.save(categoria));
     }
 
     public List<Category> listarCategorias(){
