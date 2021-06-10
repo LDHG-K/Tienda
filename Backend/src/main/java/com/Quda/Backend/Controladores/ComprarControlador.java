@@ -1,5 +1,6 @@
 package com.Quda.Backend.Controladores;
 
+import com.Quda.Backend.Controladores.RespuestasDTO.ComprarControlador.CompraDTO;
 import com.Quda.Backend.Entidades.Bill;
 import com.Quda.Backend.Servicio.ServicioCompras;
 import com.Quda.Backend.Servicio.ServicioFactura;
@@ -8,10 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +20,18 @@ import java.util.List;
 public class ComprarControlador {
 
     private final ServicioCompras servicioCompra;
-    private final ServicioProducto servicioProducto;
 
-    @PostMapping
-    public HttpEntity<HttpStatus> crearFactura(@RequestBody HashMap productos){
+    @PostMapping("/{usuario}")
+    public HttpEntity<HttpStatus> crearFactura(@RequestBody CompraDTO input, @PathVariable ("usuario") String usuario){
+        HttpStatus status = HttpStatus.ACCEPTED;
+        try {
+            servicioCompra.registrarCompra(input.getProductos(),usuario,input.getFactura());
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
 
-
-        //servicioCompra.registrarCompra();
-
-        return null;
+        return new HttpEntity<>(status);
     }
 
 

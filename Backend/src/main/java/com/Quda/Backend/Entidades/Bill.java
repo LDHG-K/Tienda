@@ -53,6 +53,9 @@ public class Bill implements Serializable {
 	@Column(name="fk_states_id")
 	private Integer stateId;
 
+	@Column(name="fk_city_id")
+	private Integer cityId;
+
 
 	//bi-directional many-to-one association to City
 	@ManyToOne

@@ -96,7 +96,7 @@ public class ServicioProducto {
     public Optional<Product> validarExistencias(Integer id, Integer value){
 
         Optional<Product> productoValidar= jpaProducto.findById(id);
-        if (productoValidar.get().getProductStock()-value >= 0){
+        if (productoValidar.get().getProductStock()-value < 0){
             throw new RuntimeException("No hay existencias del producto "+productoValidar.get().getProductName());
         }
         return productoValidar;
