@@ -43,6 +43,15 @@ public class Product implements Serializable {
 	@Column(name="product_stock")
 	private Integer productStock;
 
+	@Column(name = "fk_category_id")
+	private Integer categoryId;
+
+	@Column(name = "fk_typestype_id")
+	private Integer objetiveId;
+
+	@Column(name= "fk_supplier_id")
+	private Integer supplierId;
+
 	//bi-directional many-to-one association to BillsProduct
 	@OneToMany(mappedBy="product")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

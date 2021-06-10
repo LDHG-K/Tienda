@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface JpaProveedor extends JpaRepository<Supplier,Integer> {
 
-    @Query(value = "SELECT supplier_id FROM suppliers WHERE suppliers_name = :supplier",nativeQuery = true)
+    @Query(value = "SELECT supplier_id FROM supplier WHERE supplier_name = :supplier",nativeQuery = true)
     Integer darIdPorProveedorNombre(@Param("supplier") String supplier);
 
 }
