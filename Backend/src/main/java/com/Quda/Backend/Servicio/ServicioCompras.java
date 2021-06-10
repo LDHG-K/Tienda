@@ -26,11 +26,20 @@ public class ServicioCompras {
 
                             Optional<Bill> factura = servicioFactura.crearFactura(user,facturaCrear);
                             try {
+                                   servicioProducto.restarExistencias(productos);
+                            }
+                            catch (RuntimeException e){
+                                   throw new RuntimeException("Error al restar productos ");
+                            }
+
+                            try {
                                    servicioDetalleFactura.crearDetalles(factura.get().getBillId(),productos);
                             }
                             catch (RuntimeException e){
-                                   throw e;
+                                   throw new RuntimeException("Error al crear los detalles");
                             }
+
+
                      }
               }
               catch (RuntimeException e){

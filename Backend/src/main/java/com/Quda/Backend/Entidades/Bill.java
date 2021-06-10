@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -36,10 +37,10 @@ public class Bill implements Serializable {
 	private String billSendAddres;
 
 	@Column(name="bill_send_cost")
-	private Integer billSendCost;
+	private BigDecimal billSendCost;
 
 	@Column(name="bill_total")
-	private Integer billTotal;
+	private BigDecimal billTotal;
 
 	@Column(name="fk_pay_form_id")
 	private Integer payFormId;

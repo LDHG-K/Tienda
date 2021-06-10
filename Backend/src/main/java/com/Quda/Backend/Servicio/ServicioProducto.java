@@ -57,6 +57,14 @@ public class ServicioProducto {
     public List<Product> listarProductosObjetivo(Integer objetivo) {
         return jpaProducto.listarPorObjetivo(objetivo);
     }
+    //Agregar Stock =========================================================================
+
+    public void agregarStockAlProducto(Integer producto, Integer cantidad){
+        Product product = jpaProducto.findById(producto).get();
+        product.setProductStock(product.getProductStock()+cantidad);
+        jpaProducto.save(product);
+    }
+
 
     //Validar Productos ======================================================================
 

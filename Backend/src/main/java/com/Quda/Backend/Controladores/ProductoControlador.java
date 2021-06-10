@@ -44,6 +44,14 @@ public class ProductoControlador {
         servicioProducto.eliminarProducto(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+    // STOCK ==========================================================================================
+
+    @PostMapping("/{id}/{cantidad}")
+    public HttpEntity<HttpStatus> agregarStockAUnProducto(@PathVariable Integer id, @PathVariable Integer cantidad){
+        servicioProducto.agregarStockAlProducto(id,cantidad);
+        return new HttpEntity<>(HttpStatus.OK);
+    }
+
     // LISTAR   =======================================================================================
 
     @GetMapping("/all")
