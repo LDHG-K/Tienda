@@ -1,0 +1,92 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+
+
+
+#producto{
+    background: white;
+    height: 250px;
+    width: 200px;
+    margin-top: 0px;
+    box-shadow: 0.5px 0.5px 5px;
+    animation: apear  2s linear;
+}
+
+#imagen{
+
+width: 100%;
+height: 70%;
+background-color: white;
+
+}
+
+#imagen img{
+    width: 100%;
+    height: 100%;
+}
+#imagen img:hover{
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+#titulo a{
+    text-decoration: none;
+    color: black;
+}
+#titulo a:hover{
+    text-decoration: none;
+    color: #EFA885;
+}
+
+
+#precio {
+    color:grey;
+}
+
+/*#precio:hover{
+    color: #EFA885;
+}*/
+
+#Botones{
+    border-top: 10px;
+}
+
+#Botones img{
+    width: 15%;
+}
+
+#Botones img:hover{
+    width: 17%;
+}
+
+@keyframes apear{
+
+    0%{
+        opacity: 0%;
+    }
+
+    25%{
+        opacity: 25%;
+    }
+
+    50%{
+        opacity: 50%;
+    }
+
+    75%{
+        opacity: 75%;
+    }
+
+    100%{
+        opacity: 100%;
+    }
+
+}
