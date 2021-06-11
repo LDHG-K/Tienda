@@ -47,7 +47,6 @@ public class ServicioDetalleFactura {
                     .total(valorRegistro)
                     .build();
             jpaDetalleFactura.save(registro);
-            System.out.println(valorRegistro.toString());
             totales.add(valorRegistro);
         });
 
@@ -73,7 +72,6 @@ public class ServicioDetalleFactura {
     public void actualizarTotalFactura(BigDecimal total, Integer idFactura){
         Optional<Bill> factura = jpaFactura.findById(idFactura);
         factura.get().setBillTotal(factura.get().getBillSendCost().add(total));
-        System.out.println(total);
         jpaFactura.save(factura.get());
     }
 
