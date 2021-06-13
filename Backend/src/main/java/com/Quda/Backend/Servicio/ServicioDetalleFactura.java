@@ -59,7 +59,7 @@ public class ServicioDetalleFactura {
         actualizarTotalFactura(total,idFactura);
     }
 
-    public BigDecimal calcularTotalProducto(Integer k, Integer v){
+    private BigDecimal calcularTotalProducto(Integer k, Integer v){
         Optional<Product> producto = servicioProducto.buscarProducto(k);
         BigDecimal itemCost=new BigDecimal(BigInteger.ZERO,  2);
         BigDecimal totalCost=new BigDecimal(BigInteger.ZERO,  2);
@@ -68,19 +68,21 @@ public class ServicioDetalleFactura {
         return totalCost.add(itemCost);
     }
 
-
-    public void actualizarTotalFactura(BigDecimal total, Integer idFactura){
+    private void actualizarTotalFactura(BigDecimal total, Integer idFactura){
         Optional<Bill> factura = jpaFactura.findById(idFactura);
         factura.get().setBillTotal(factura.get().getBillSendCost().add(total));
         jpaFactura.save(factura.get());
     }
 
-    public BillsProductPK crearLLaves(Integer idFactura, Integer serial){
+    private BillsProductPK crearLLaves(Integer idFactura, Integer serial){
         return BillsProductPK.builder().
                 fkProductSerial(serial).
                 fkBillsId(idFactura).build();
     }
 
+    //=============================================================================
 
-
+    public List<BillsProduct> buscarDetallesDeUnaFactura(Integer idFactura){
+        return  jpaDetalleFactura.buscarPorIdfactura(idFactura);
+    }
 }

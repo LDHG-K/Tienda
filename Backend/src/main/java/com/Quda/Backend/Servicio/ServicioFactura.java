@@ -41,6 +41,9 @@ public class ServicioFactura {
         return Optional.of(jpaFactura.save(factura));
     }
 
+    public Optional<Bill> buscarFactura(Integer idFactura){
+        return jpaFactura.findById(idFactura);
+    }
 
 
 
