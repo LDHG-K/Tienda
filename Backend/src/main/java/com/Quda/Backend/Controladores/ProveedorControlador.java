@@ -8,9 +8,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Proveedor")
@@ -43,17 +48,22 @@ public class ProveedorControlador {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> crearProveedor(@RequestBody Supplier proveedor){
+    public ResponseEntity<HttpStatus> crearProveedor(@Valid @RequestBody Supplier proveedor){
 
         HttpStatus status = HttpStatus.OK;
-        if (servicioProveedor.crearProveedor(proveedor).isEmpty()){
+        try {
+            servicioProveedor.crearProveedor(proveedor);
+
+        }
+        catch (RuntimeException e){
+            System.out.println("ERROR /n"+e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity(status);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity eliminarProveedor(@PathVariable("id") Integer id){
+    public ResponseEntity eliminarProveedor( @PathVariable("id") Integer id){
         HttpStatus status = HttpStatus.OK;
         try {
             servicioProveedor.eliminarProveedor(id);
@@ -66,7 +76,7 @@ public class ProveedorControlador {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity editarProveedor(@RequestBody Supplier proveedor, @PathVariable ("id") String id){
+    public ResponseEntity editarProveedor(@Valid @RequestBody Supplier proveedor, @PathVariable ("id") String id){
         HttpStatus status = HttpStatus.OK;
         try {
             servicioProveedor.editarProveedor(proveedor,id);
@@ -78,5 +88,17 @@ public class ProveedorControlador {
         return new ResponseEntity(status);
     }
 
+    //========================================================================================================
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
 
 }

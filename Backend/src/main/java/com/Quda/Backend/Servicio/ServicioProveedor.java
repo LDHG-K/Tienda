@@ -4,9 +4,11 @@ import com.Quda.Backend.Entidades.Category;
 import com.Quda.Backend.Entidades.Supplier;
 import com.Quda.Backend.Repositorio.JpaProveedor;
 import lombok.AllArgsConstructor;
+import org.postgresql.util.PSQLException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +38,7 @@ public class ServicioProveedor {
         try {
              proveedorGuardado = Optional.ofNullable(jpaProveedor.save(proveedor));
         }
-        catch (RuntimeException e){
+        catch ( RuntimeException e){
             throw e;
         }
         return proveedorGuardado;
