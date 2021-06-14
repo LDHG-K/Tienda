@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -21,6 +24,9 @@ public class Supplier implements Serializable {
 	@Column(name="supplier_id")
 	private Integer supplierId;
 
+	@NotNull(message = "Nombre del proveedor no puede ser un espacio vacio")
+	@Size(min = 2, max = 30, message = "El nombre no puede exceder de los 30 caracteres")
+	@NotBlank(message =  "No son admitidos los espacios en blanco")
 	@Column(name="supplier_name")
 	private String supplierName;
 
