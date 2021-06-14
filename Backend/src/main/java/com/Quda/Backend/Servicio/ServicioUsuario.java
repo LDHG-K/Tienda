@@ -54,10 +54,11 @@ public class ServicioUsuario {
     public Optional<User> editarUsuario(User usuario, String id)
     {
         try{
+            jpaUsuario.findById(id);
             jpaUsuario.cambiarIdUsuario(usuario.getUserNickName(),id);
         }
         catch ( Exception e){
-
+            throw new RuntimeException("No existe el usuario que se desea actualizar");
         }
         User temp = buscarUsuario(usuario.getUserNickName()).get();
         temp.setUserPassword(usuario.getUserPassword());

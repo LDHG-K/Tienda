@@ -62,7 +62,7 @@ public class ProductoControlador {
             status = HttpStatus.NOT_FOUND;
         }
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(status);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> eliminarProducto(@PathVariable("id") Integer id){
