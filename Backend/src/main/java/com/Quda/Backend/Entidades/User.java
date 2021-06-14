@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Builder;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -31,9 +32,11 @@ public class User implements Serializable {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String userPassword;
 
+	@Positive
 	@Column(name="fk_person_id")
 	private Integer personId;
 
+	@Positive
 	@Column(name="fk_state_id")
 	private Integer stateId;
 	//bi-directional many-to-one association to Person

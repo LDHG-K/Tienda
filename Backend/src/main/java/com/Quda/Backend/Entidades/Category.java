@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 
@@ -22,6 +23,7 @@ public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Positive
 	@Column(name="category_id")
 	private Integer categoryId;
 

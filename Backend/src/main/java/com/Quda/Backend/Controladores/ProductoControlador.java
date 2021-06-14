@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -27,29 +28,69 @@ public class ProductoControlador {
 
     // CRUD   =========================================================================================
     @PostMapping
-    public HttpEntity<Product> crearProducto(@Valid @RequestBody Product product){
-        return new ResponseEntity(servicioProducto.crearProducto(product).get(),HttpStatus.CREATED);
+    public ResponseEntity<Product> crearProducto(@Valid @RequestBody Product product){
+        Optional<Product> response = null;
+        HttpStatus status = HttpStatus.CREATED;
+        try{
+            response = servicioProducto.crearProducto(product);
+        }catch (RuntimeException e){
+            System.out.println("Error al crear el producto por : "+e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity(response,status);
     }
     @GetMapping("/{id}")
     public HttpEntity<Product> buscarProducto(@PathVariable("id") Integer id){
-        return new ResponseEntity(servicioProducto.buscarProducto(id).get(),HttpStatus.OK);
+        Optional<Product> response = null;
+        HttpStatus status = HttpStatus.FOUND;
+        try {
+            response = servicioProducto.buscarProducto(id);
+        }catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity(response,status);
     }
     @PutMapping
-    public HttpEntity<HttpStatus> actualizarProducto(@Valid @RequestBody Product product){
-        servicioProducto.editarProducto(product).get();
+    public ResponseEntity<HttpStatus> actualizarProducto(@Valid @RequestBody Product product){
+        Optional<Product> response = null;
+        HttpStatus status = HttpStatus.OK;
+        try{
+            response = servicioProducto.editarProducto(product);
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            status = HttpStatus.NOT_FOUND;
+        }
+
         return new ResponseEntity(HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public HttpEntity<HttpStatus> eliminarProducto(@PathVariable("id") Integer id){
-        servicioProducto.eliminarProducto(id);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<HttpStatus> eliminarProducto(@PathVariable("id") Integer id){
+        HttpStatus status = HttpStatus.OK;
+        try {
+            servicioProducto.eliminarProducto(id);
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity(status);
     }
     // STOCK ==========================================================================================
 
     @PostMapping("/{id}/{cantidad}")
     public HttpEntity<HttpStatus> agregarStockAUnProducto(@PathVariable Integer id, @PathVariable Integer cantidad){
-        servicioProducto.agregarStockAlProducto(id,cantidad);
-        return new HttpEntity<>(HttpStatus.OK);
+        HttpStatus status = HttpStatus.OK;
+        try{
+            if(cantidad<=0){
+                throw new RuntimeException("No se pueden añadir cantidades vacias o negativas");
+            }
+            servicioProducto.agregarStockAlProducto(id,cantidad);
+        }catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return new HttpEntity<>(status);
     }
 
     // LISTAR   =======================================================================================
@@ -57,6 +98,10 @@ public class ProductoControlador {
     @GetMapping("/all")
     public ResponseEntity<List<Product>> listarTodos(){
         return new ResponseEntity(servicioProducto.listarProductos(), HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/all-Disponibles")
+    public ResponseEntity<List<Product>> listarProductosDisponibles(){
+        return new ResponseEntity<>(servicioProducto.listarProductosDisponibles(),HttpStatus.ACCEPTED);
     }
     @GetMapping("/Categoria/{id}")
     public ResponseEntity<List<Product>> listarPorCategoria(@PathVariable ("id") Integer id){

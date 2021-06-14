@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 
@@ -24,15 +26,19 @@ public class BillsProduct implements Serializable {
 	@EmbeddedId
 	private BillsProductPK id;
 
+	@PositiveOrZero
 	@Column(name = "discount")
 	private BigDecimal discount;
 
+	@PositiveOrZero
 	@Column(name = "tax")
 	private BigDecimal tax;
 
+	@PositiveOrZero
 	@Column(name = "total")
 	private BigDecimal total;
 
+	@Positive
 	@Column(name = "units")
 	private Integer units;
 

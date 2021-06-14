@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -29,11 +30,14 @@ public class Person implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Positive
 	@Column(name="person_id")
 	private Integer personId;
 
+	@Positive
 	@Column(name="fk_names_identification_id")
 	private Integer fkNamesIdentificationId;
+
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="person_birthdate")
@@ -59,9 +63,11 @@ public class Person implements Serializable {
 	@Size(min = 4, max = 30, message = "nombre debe tener entre 4 y 30 caracteres")
 	private String personName;
 
+	@Positive
 	@Column(name="fk_city_id")
 	private Integer cityId;
 
+	@Positive
 	@Column(name="fk_roles_id")
 	private Integer roleId;
 

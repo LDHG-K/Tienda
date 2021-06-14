@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -36,24 +38,31 @@ public class Bill implements Serializable {
 	@Column(name="bill_send_addres")
 	private String billSendAddres;
 
+	@PositiveOrZero
 	@Column(name="bill_send_cost")
 	private BigDecimal billSendCost;
 
+	@PositiveOrZero
 	@Column(name="bill_total")
 	private BigDecimal billTotal;
 
+	@Positive
 	@Column(name="fk_pay_form_id")
 	private Integer payFormId;
 
+	@Positive
 	@Column(name="fk_persons_id")
 	private Integer personId;
 
+	@Positive
 	@Column(name="fk_shipping_guide")
 	private Integer shippingId;
 
+	@Positive
 	@Column(name="fk_states_id")
 	private Integer stateId;
 
+	@Positive
 	@Column(name="fk_city_id")
 	private Integer cityId;
 

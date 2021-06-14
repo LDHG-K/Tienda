@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -34,21 +38,28 @@ public class Product implements Serializable {
 	@Column(name="product_image")
 	private Integer productImage;
 
+	@Size(min = 3, max = 30, message
+			= "El nombre del producto no debe de ser mayor a 30 o menor a 3 caracteres")
 	@Column(name="product_name")
 	private String productName;
 
+	@PositiveOrZero(message = "El valor de venta siempre debe de ser positivo o 0 en su defecto")
 	@Column(name="product_sell_price")
 	private BigDecimal productSellPrice;
 
+	@Min(value = 0, message = "EL STOCK NUNCA DEBE DE SER MENOR A 0")
 	@Column(name="product_stock")
 	private Integer productStock;
 
+	@Positive
 	@Column(name = "fk_category_id")
 	private Integer categoryId;
 
+	@Positive
 	@Column(name = "fk_typestype_id")
 	private Integer objetiveId;
 
+	@Positive
 	@Column(name= "fk_supplier_id")
 	private Integer supplierId;
 

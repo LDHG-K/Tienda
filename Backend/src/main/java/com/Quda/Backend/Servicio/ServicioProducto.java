@@ -34,9 +34,15 @@ public class ServicioProducto {
     }
 
     public Optional<Product> editarProducto(Product producto){
+        if (jpaProducto.findById(producto.getProductSerial()).isEmpty()){
+            throw new RuntimeException("El producto que se quiere editar no existe");
+        }
         return Optional.ofNullable(jpaProducto.save(producto)); }
 
     public void eliminarProducto(Integer id){
+        if (jpaProducto.findById(id).isEmpty()){
+            throw new RuntimeException("El producto que se quiere eliminar no existe");
+        }
         jpaProducto.delete(buscarProducto(id).get());
     }
 
@@ -45,6 +51,9 @@ public class ServicioProducto {
     public List<Product> listarProductos(){
         return jpaProducto.findAll();
     }
+
+    public List<Product> listarProductosDisponibles() {
+    return jpaProducto.listarDisponibles();}
 
     public List<Product> listarProductosCategoria(Integer categoria){
         return jpaProducto.listarPorCategoria(categoria);
@@ -60,9 +69,12 @@ public class ServicioProducto {
     //Agregar Stock =========================================================================
 
     public void agregarStockAlProducto(Integer producto, Integer cantidad){
-        Product product = jpaProducto.findById(producto).get();
-        product.setProductStock(product.getProductStock()+cantidad);
-        jpaProducto.save(product);
+        Optional<Product> product = jpaProducto.findById(producto);
+        if (product.isEmpty()){
+            throw new RuntimeException("El producto no al que se quiere agregar stock no existe. (Revisa el serial del producto)");
+        }
+        product.get().setProductStock(product.get().getProductStock()+cantidad);
+        jpaProducto.save(product.get());
     }
 
 
@@ -70,7 +82,6 @@ public class ServicioProducto {
 
     @Transactional
     public void restarExistencias (HashMap<Integer,Integer> listaProductos){
-
         listaProductos.forEach((k,v) ->
                 {
                     try {
@@ -80,96 +91,24 @@ public class ServicioProducto {
                     }
                     catch (RuntimeException e){
                         throw e;
-                    }
-                }
-        );
-
+                    } });
     }
 
     public Boolean existeStock(HashMap<Integer,Integer> listaProductos){
-
         listaProductos.forEach((k,v) ->
-        {
-            try {
+        { try {
                 Optional<Product> productoValidado = validarExistencias(k,v);}
             catch (RuntimeException e){
                 throw e;
-            }
-        }
-        );
+            } });
         return true;
-
     }
 
     public Optional<Product> validarExistencias(Integer id, Integer value){
-
         Optional<Product> productoValidar= jpaProducto.findById(id);
         if (productoValidar.get().getProductStock()-value < 0){
             throw new RuntimeException("No hay existencias del producto "+productoValidar.get().getProductName());
         }
         return productoValidar;
     }
-
-
-    // Metodos Recibiendo listas <OPCIONAL>
-  /*
-    public void restarExistencias(List<Integer> listaProductos){
-
-        List<Product> listaNueva = null;
-
-        for (Integer idProducto: listaProductos) {
-            try{
-                Product productoValidado =validarExistencias(idProducto).get();
-                productoValidado.setProductStock(productoValidado.getProductStock()-1);
-                listaNueva.add(productoValidado);
-                jpaProducto.saveAll(listaNueva);
-            }
-
-            catch (RuntimeException e){
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    public List<Integer> existeStock(List<Integer> listaProductos){
-
-
-        for (Integer idProducto: listaProductos) {
-            try{
-                Product productoValidado =validarExistencias(idProducto,).get();
-            }
-            catch (RuntimeException e){
-                System.out.println(e.getMessage());
-            }
-        }
-        return listaProductos;
-    }
-
-    public Optional<Product> validarExistencias(Integer id, Integer cantidad){
-
-        Optional<Product> productoValidar= jpaProducto.findById(id);
-        if (productoValidar.get().getProductStock()==0){
-            throw new RuntimeException("No hay existencias del producto "+productoValidar.get().getProductName());
-        }
-        return productoValidar;
-    }
-
-    public HashMap<Integer, Integer> transform (List<Integer> list){
-
-		HashMap<Integer, Integer> response = new HashMap<Integer, Integer>(list.size());
-		for (Integer integer : list) {
-			if (!response.containsKey(integer)) {
-				response.put(integer, 1);
-			}
-			else {
-				int value = response.get(integer);
-				response.replace(integer, value+1);
-			}
-		}
-		return response;
-	}
-
-   */
-
-
 }
