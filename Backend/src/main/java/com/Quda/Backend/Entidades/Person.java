@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -38,7 +39,6 @@ public class Person implements Serializable {
 	@Column(name="fk_names_identification_id")
 	private Integer fkNamesIdentificationId;
 
-
 	@Temporal(TemporalType.DATE)
 	@Column(name="person_birthdate")
 	private Date personBirthdate;
@@ -50,6 +50,7 @@ public class Person implements Serializable {
 	@Column(name="person_creation_date")
 	private Date personCreationDate;
 
+	@Email(message = "El correo debe de tener un formato de correo electronico")
 	@Column(name="person_email")
 	private String personEmail;
 
