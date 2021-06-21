@@ -25,6 +25,7 @@ public class FacturaControlador  {
     @GetMapping("/{id}")
     public HttpEntity<Bill> buscarFactura(@PathVariable Integer id){
 
+
         return new HttpEntity<>(servicioFactura.buscarFactura(id).get());
     }
 

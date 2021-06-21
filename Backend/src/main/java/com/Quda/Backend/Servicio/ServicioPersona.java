@@ -35,9 +35,13 @@ public class ServicioPersona {
     */
 
 
-    public Person editarPersona(Person personaEditada, String id){
+    public Optional<Person> editarPersona(Person personaEditada, String id){
 
         Optional<User> usuario = servicioUsuario.buscarUsuario(id);
+
+        if (usuario.isEmpty()){
+            throw  new RuntimeException("Usuario no existe");
+        }
 
         Person personaAntigua = usuario.get().getPerson();
 
@@ -47,8 +51,7 @@ public class ServicioPersona {
 
         System.out.println( personaEditada.toString());
 
-
-        return jpaPersona.save(personaEditada);
+        return Optional.ofNullable(jpaPersona.save(personaEditada));
     }
 
     //LISTAR =========================================================================

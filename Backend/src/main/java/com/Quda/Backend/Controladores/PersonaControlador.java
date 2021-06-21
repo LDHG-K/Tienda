@@ -29,15 +29,41 @@ public class PersonaControlador {
 
     private final ServicioPersona servicioPersona;
 
+    //------------------------------!Pendiente!-----------------------------------------------------------
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> eliminarPersona(@PathVariable ("id") Integer id){
+       return null;
+    }
+    //----------------------------------------------------------------------------------------------------
+
     @PutMapping ("/{id}")
     public ResponseEntity<HttpStatus> editarPersona (@Valid @RequestBody Person person, @PathVariable ("id") String id){
         HttpStatus status = HttpStatus.OK;
-        servicioPersona.editarPersona(person , id);
+        Optional<Person> persona = null;
+        try {
+            persona = servicioPersona.editarPersona(person , id);
+        }
+        catch (RuntimeException e){
+            System.out.println("No se logró editar la persona :"+e.getMessage());
+            status = HttpStatus.NOT_FOUND;
+        }
+
         return new ResponseEntity(status);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Person> darPersona(@PathVariable ("id") String id){
-        return new ResponseEntity(servicioPersona.buscarPersona(id).get(),HttpStatus.ACCEPTED);
+        HttpStatus status = HttpStatus.OK;
+        Optional<Person> persona = null;
+
+        try{
+            persona = servicioPersona.buscarPersona(id);
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            status = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity(persona,HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{estado}")
