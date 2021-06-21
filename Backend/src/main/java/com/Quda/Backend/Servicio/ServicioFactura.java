@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLOutput;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,7 @@ public class ServicioFactura {
             user = servicioUsuario.validarUsuario(usuario).get();
         }
         catch (RuntimeException e){
-            System.out.println(e.getMessage());
+            throw e;
         }
         //Complementos
         factura.setBillDate(new Date());
@@ -36,16 +37,30 @@ public class ServicioFactura {
         try {
             return Optional.of(jpaFactura.save(factura));
         }catch (NullPointerException e){
-            System.out.println(e.getMessage());
+            throw e;
         }
-        return Optional.of(jpaFactura.save(factura));
     }
 
     public Optional<Bill> buscarFactura(Integer idFactura){
-        return jpaFactura.findById(idFactura);
+        Optional<Bill> factura = jpaFactura.findById(idFactura);
+        if (factura.isEmpty()){
+            throw new RuntimeException("No existe la factura con el id "+idFactura);
+        }
+        return factura;
     }
 
 
+    public List<Bill> buscarFacturasDelUsuario(String id) {
+        List<Bill> facturas = null;
+        User usuario = null;
+        try {
+            usuario = servicioUsuario.buscarUsuario(id).get();
+            facturas = jpaFactura.buscarFacturaPorUsuario(usuario.getPersonId());
+        }
+        catch (RuntimeException e){
+            throw e;
+        }
 
-
+        return facturas;
+    }
 }

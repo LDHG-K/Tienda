@@ -14,10 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 
-/**
- * The persistent class for the bills database table.
- * 
- */
 @Entity
 @Table(name="bills")
 @NoArgsConstructor
