@@ -17,25 +17,23 @@ public class ServicioPersona {
     private final JpaPersona jpaPersona;
     private final ServicioUsuario servicioUsuario;
 
+    //CRUD ==========================================================================
+
     public Optional<Person> buscarPersona(String id){
         Optional<User> buscado = servicioUsuario.buscarUsuario(id);
         if (buscado.isEmpty()){throw new RuntimeException("No encontrado");}
         return Optional.of(buscado.get().getPerson());
     }
 
-
-    /*public void eliminarPersona(Integer id, String id){
+    /* OPCIONAL BORRAR EN CASCADA
+    public void eliminarPersona(Integer id){
 
         try{jpaPersona.delete(buscarPersona(id).get());}
         catch (RuntimeException e){throw new RuntimeException("Persona no existe");}
 
     }
+    */
 
-     */
-
-    public List<Person> enlistarPersonas(){
-        return jpaPersona.findAll();
-    }
 
     public Person editarPersona(Person personaEditada, String id){
 
@@ -53,5 +51,13 @@ public class ServicioPersona {
         return jpaPersona.save(personaEditada);
     }
 
+    //LISTAR =========================================================================
+
+    public List<Person> enlistarPersonas(Integer estado){
+        if (estado<=0 || estado>9){
+            throw new RuntimeException("Estado no Existe");
+        }
+        return jpaPersona.buscarPersonasPorEstado(estado);
+    }
 
 }

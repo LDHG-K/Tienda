@@ -18,6 +18,7 @@ import org.springframework.web.servlet.function.ServerRequest;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,6 +39,12 @@ public class PersonaControlador {
     public ResponseEntity<Person> darPersona(@PathVariable ("id") String id){
         return new ResponseEntity(servicioPersona.buscarPersona(id).get(),HttpStatus.ACCEPTED);
     }
+
+    @GetMapping("/{estado}")
+    public ResponseEntity<List<Person>> darPersonasPorEstado(@PathVariable ("estado") Integer estado){
+        return new ResponseEntity(servicioPersona.enlistarPersonas(estado),HttpStatus.ACCEPTED);
+    }
+
 
     //========================================================================================================
     @ResponseStatus(HttpStatus.BAD_REQUEST)
