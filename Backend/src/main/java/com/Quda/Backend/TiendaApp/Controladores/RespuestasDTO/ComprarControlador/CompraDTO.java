@@ -1,6 +1,6 @@
-package com.Quda.Backend.Controladores.RespuestasDTO.ComprarControlador;
+package com.Quda.Backend.TiendaApp.Controladores.RespuestasDTO.ComprarControlador;
 
-import com.Quda.Backend.Entidades.Bill;
+import com.Quda.Backend.TiendaApp.Entidad.Bill;
 import lombok.Data;
 
 import java.util.HashMap;

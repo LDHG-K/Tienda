@@ -1,5 +1,5 @@
-package com.Quda.Backend.Qr.ControladoresQr;
-import com.Quda.Backend.Qr.ServiciosQr.ServicioQrProducto;
+package com.Quda.Backend.QrApp.ControladoresQr;
+import com.Quda.Backend.QrApp.ServiciosQr.ServicioQrProducto;
 import com.google.zxing.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

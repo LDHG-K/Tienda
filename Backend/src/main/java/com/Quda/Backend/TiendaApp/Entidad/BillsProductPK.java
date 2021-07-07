@@ -1,4 +1,4 @@
-package com.Quda.Backend.Entidades;
+package com.Quda.Backend.TiendaApp.Entidad;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

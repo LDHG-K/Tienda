@@ -1,12 +1,11 @@
-package com.Quda.Backend.Servicio;
+package com.Quda.Backend.TiendaApp.Servicio;
 
-import com.Quda.Backend.Entidades.Bill;
-import com.Quda.Backend.Entidades.BillsProduct;
-import com.Quda.Backend.Entidades.BillsProductPK;
-import com.Quda.Backend.Entidades.Product;
-import com.Quda.Backend.Repositorio.JpaDetalleFactura;
-import com.Quda.Backend.Repositorio.JpaFactura;
-import io.swagger.models.auth.In;
+import com.Quda.Backend.TiendaApp.Entidad.Bill;
+import com.Quda.Backend.TiendaApp.Entidad.BillsProduct;
+import com.Quda.Backend.TiendaApp.Entidad.BillsProductPK;
+import com.Quda.Backend.TiendaApp.Entidad.Product;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaDetalleFactura;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaFactura;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

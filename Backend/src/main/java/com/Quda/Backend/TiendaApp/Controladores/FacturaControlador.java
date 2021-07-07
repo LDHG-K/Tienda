@@ -1,9 +1,9 @@
-package com.Quda.Backend.Controladores;
+package com.Quda.Backend.TiendaApp.Controladores;
 
-import com.Quda.Backend.Controladores.RespuestasDTO.FacturaControlador.FacturaCompletaDTO;
-import com.Quda.Backend.Entidades.Bill;
-import com.Quda.Backend.Servicio.ServicioDetalleFactura;
-import com.Quda.Backend.Servicio.ServicioFactura;
+import com.Quda.Backend.TiendaApp.Controladores.RespuestasDTO.FacturaControlador.FacturaCompletaDTO;
+import com.Quda.Backend.TiendaApp.Entidad.Bill;
+import com.Quda.Backend.TiendaApp.Servicio.ServicioDetalleFactura;
+import com.Quda.Backend.TiendaApp.Servicio.ServicioFactura;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

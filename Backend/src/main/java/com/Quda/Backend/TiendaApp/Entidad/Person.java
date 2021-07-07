@@ -1,6 +1,5 @@
-package com.Quda.Backend.Entidades;
+package com.Quda.Backend.TiendaApp.Entidad;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,10 +67,6 @@ public class Person implements Serializable {
 	@Column(name="fk_city_id")
 	private Integer cityId;
 
-	@Positive
-	@Column(name="fk_roles_id")
-	private Integer roleId;
-
 	//bi-directional many-to-one association to Bill
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToMany(mappedBy="person")
@@ -84,10 +79,6 @@ public class Person implements Serializable {
 	private City city;
 
 	//bi-directional many-to-one association to Role
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@ManyToOne
-	@JoinColumn(name="fk_roles_id", updatable = false,insertable = false)
-	private Role role;
 
 	//bi-directional many-to-one association to User
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

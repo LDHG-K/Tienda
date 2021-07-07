@@ -1,7 +1,7 @@
-package com.Quda.Backend.Servicio;
+package com.Quda.Backend.TiendaApp.Servicio;
 
-import com.Quda.Backend.Entidades.Category;
-import com.Quda.Backend.Repositorio.JpaCategoria;
+import com.Quda.Backend.TiendaApp.Entidad.Category;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaCategoria;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

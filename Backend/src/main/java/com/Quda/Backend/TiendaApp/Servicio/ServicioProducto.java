@@ -1,11 +1,8 @@
-package com.Quda.Backend.Servicio;
+package com.Quda.Backend.TiendaApp.Servicio;
 
-import com.Quda.Backend.Entidades.Person;
-import com.Quda.Backend.Entidades.Product;
-import com.Quda.Backend.Entidades.User;
-import com.Quda.Backend.Repositorio.JpaProducto;
+import com.Quda.Backend.TiendaApp.Entidad.Product;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaProducto;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,13 +1,12 @@
-package com.Quda.Backend.Servicio;
+package com.Quda.Backend.TiendaApp.Servicio;
 
-import com.Quda.Backend.Entidades.Bill;
-import com.Quda.Backend.Entidades.User;
-import com.Quda.Backend.Repositorio.JpaFactura;
+import com.Quda.Backend.TiendaApp.Entidad.Bill;
+import com.Quda.Backend.TiendaApp.Entidad.User;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaFactura;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLOutput;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

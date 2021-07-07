@@ -1,20 +1,14 @@
-package com.Quda.Backend.Controladores;
+package com.Quda.Backend.TiendaApp.Controladores;
 
 
-import com.Quda.Backend.Entidades.Person;
-import com.Quda.Backend.Entidades.User;
-import com.Quda.Backend.Servicio.ServicioPersona;
-import com.sun.net.httpserver.Headers;
+import com.Quda.Backend.TiendaApp.Entidad.Person;
+import com.Quda.Backend.TiendaApp.Servicio.ServicioPersona;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.ServerRequest;
 
 import javax.validation.Valid;
 import java.util.HashMap;

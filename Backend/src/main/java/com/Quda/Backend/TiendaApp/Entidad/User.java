@@ -1,10 +1,14 @@
-package com.Quda.Backend.Entidades;
+package com.Quda.Backend.TiendaApp.Entidad;
 
+import com.Quda.Backend.LoginApp.Token.TokenConfirmacion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Builder;
-import java.io.Serializable;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -12,14 +16,19 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name="users")
-public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class User  {
+
+
 
 	@Id
 	@Column(name="user_nick_name")
@@ -39,7 +48,26 @@ public class User implements Serializable {
 	@Positive
 	@Column(name="fk_state_id")
 	private Integer stateId;
-	//bi-directional many-to-one association to Person
+
+	// Seguridad
+
+	@Positive
+	@Column(name="fk_roles_id")
+	private Long UserRole;
+
+	@Column(name = "enabled")
+	private Boolean enabled = false;
+
+	@Column(name = "lockeduser")
+	private Boolean locked = false;
+
+
+	// Relaciones
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@ManyToOne
+	@JoinColumn(name="fk_roles_id", updatable = false,insertable = false)
+	private Role role;
+
 
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToOne(cascade = {CascadeType.ALL})
@@ -53,5 +81,9 @@ public class User implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_state_id", updatable = false,insertable = false)
 	private State state;
+
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@OneToMany(mappedBy="users")
+	private List<TokenConfirmacion> tokens;
 
 }

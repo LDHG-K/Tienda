@@ -1,7 +1,7 @@
-package com.Quda.Backend.Repositorio;
+package com.Quda.Backend.TiendaApp.Repositorio;
 
-import com.Quda.Backend.Entidades.BillsProduct;
-import com.Quda.Backend.Entidades.BillsProductPK;
+import com.Quda.Backend.TiendaApp.Entidad.BillsProduct;
+import com.Quda.Backend.TiendaApp.Entidad.BillsProductPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

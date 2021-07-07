@@ -1,7 +1,7 @@
-package com.Quda.Backend.Controladores;
+package com.Quda.Backend.TiendaApp.Controladores;
 
-import com.Quda.Backend.Entidades.Category;
-import com.Quda.Backend.Servicio.ServicioCategoria;
+import com.Quda.Backend.TiendaApp.Entidad.Category;
+import com.Quda.Backend.TiendaApp.Servicio.ServicioCategoria;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;

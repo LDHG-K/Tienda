@@ -1,4 +1,4 @@
-package com.Quda.Backend.Config;
+package com.Quda.Backend.SwaggerDocumentacion;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

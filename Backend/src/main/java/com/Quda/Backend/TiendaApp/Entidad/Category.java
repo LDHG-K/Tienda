@@ -1,4 +1,4 @@
-package com.Quda.Backend.Entidades;
+package com.Quda.Backend.TiendaApp.Entidad;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

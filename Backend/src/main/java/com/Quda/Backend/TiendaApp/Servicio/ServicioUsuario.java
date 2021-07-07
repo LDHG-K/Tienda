@@ -1,18 +1,22 @@
-package com.Quda.Backend.Servicio;
+package com.Quda.Backend.TiendaApp.Servicio;
 
-import com.Quda.Backend.Entidades.Person;
-import com.Quda.Backend.Entidades.User;
-import com.Quda.Backend.Repositorio.JpaPersona;
-import com.Quda.Backend.Repositorio.JpaUsuario;
+import com.Quda.Backend.LoginApp.Token.ServicioToken;
+import com.Quda.Backend.LoginApp.Token.TokenConfirmacion;
+import com.Quda.Backend.MailApp.Servicios.ServicioMail;
+import com.Quda.Backend.TiendaApp.Entidad.Person;
+import com.Quda.Backend.TiendaApp.Entidad.User;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaPersona;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaUsuario;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.postgresql.util.PSQLException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +25,9 @@ public class ServicioUsuario {
 
     private final JpaUsuario jpaUsuario;
     private final JpaPersona jpaPersona;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ServicioToken servicioToken;
+    private final ServicioMail servicioMail;
 
     public Optional<User> buscarUsuario(String id){
         return jpaUsuario.findById(id);
@@ -41,9 +48,25 @@ public class ServicioUsuario {
             throw new RuntimeException("Usuario "+ usuario.getUserNickName() + " Ya existe");
         }
 
+        usuario.setUserPassword(bCryptPasswordEncoder.encode(usuario.getUserPassword()));
+
+        usuario.setUserRole((Long.parseLong("1")));
         usuario.setStateId(1);
         usuario.setPersonId(person.getPersonId());
-        return Optional.ofNullable(jpaUsuario.save(usuario));
+        Optional<User> user = Optional.ofNullable(jpaUsuario.save(usuario));
+
+        String tokenID = UUID.randomUUID().toString();
+        TokenConfirmacion confirmacion = TokenConfirmacion.builder()
+                .token(tokenID)
+                .created(LocalDateTime.now())
+                .expired(LocalDateTime.now().plusMinutes(15))
+                .userId(user.get().getUserNickName())
+                .build();
+        servicioToken.guardarToken(confirmacion);
+
+        servicioMail.enviarMensajeSimple(person.getPersonEmail(),"VERIFICACION DE CUENTA", "http://localhost:8080/Usuarios/Registro/"+tokenID);
+
+        return user;
     }
 
     public List<User> listarUsuarios(){
@@ -75,6 +98,17 @@ public class ServicioUsuario {
         }
 
         return user;
+    }
+
+    public void desbloquearUsuario(String token){
+
+        TokenConfirmacion tokenValidado = servicioToken.validarToken(token);
+        Optional<User> user = buscarUsuario(tokenValidado.getUserId());
+        if (user.get().getEnabled()==true){
+            throw new RuntimeException("Usuario ya ha sido validado");
+        }
+        user.get().setEnabled(true);
+        jpaUsuario.save(user.get());
     }
 
 

@@ -1,7 +1,7 @@
-package com.Quda.Backend.Controladores.RespuestasDTO.FacturaControlador;
+package com.Quda.Backend.TiendaApp.Controladores.RespuestasDTO.FacturaControlador;
 
-import com.Quda.Backend.Entidades.Bill;
-import com.Quda.Backend.Entidades.BillsProduct;
+import com.Quda.Backend.TiendaApp.Entidad.Bill;
+import com.Quda.Backend.TiendaApp.Entidad.BillsProduct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,21 +1,16 @@
-package com.Quda.Backend.Controladores;
+package com.Quda.Backend.TiendaApp.Controladores;
 
-import com.Quda.Backend.Controladores.RespuestasDTO.ComprarControlador.CompraDTO;
-import com.Quda.Backend.Entidades.Bill;
-import com.Quda.Backend.Servicio.ServicioCompras;
-import com.Quda.Backend.Servicio.ServicioFactura;
-import com.Quda.Backend.Servicio.ServicioProducto;
+import com.Quda.Backend.TiendaApp.Controladores.RespuestasDTO.ComprarControlador.CompraDTO;
+import com.Quda.Backend.TiendaApp.Servicio.ServicioCompras;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

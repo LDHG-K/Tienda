@@ -1,11 +1,11 @@
-package com.Quda.Backend.Controladores;
-import com.Quda.Backend.Entidades.User;
-import com.Quda.Backend.Servicio.ServicioUsuario;
+package com.Quda.Backend.TiendaApp.Controladores;
+import com.Quda.Backend.LoginApp.Token.ServicioToken;
+import com.Quda.Backend.TiendaApp.Entidad.User;
+import com.Quda.Backend.TiendaApp.Servicio.ServicioUsuario;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.ServerHttpAsyncRequestControl;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class UsuarioControlador {
 
     private final ServicioUsuario servicioUsuario;
 
-    // Crud ==============================================================================
+    // ==============================================================================
 
     @GetMapping ("{id}")
     public ResponseEntity<User> darUsuario (@PathVariable("id") String id){
@@ -33,19 +33,7 @@ public class UsuarioControlador {
         }
         return new ResponseEntity(usuario.get(), status);
     }
-    @PostMapping
-    public ResponseEntity<HttpHeaders> crearUsuario (@Valid @RequestBody User usuario){
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        try {
-            if (!servicioUsuario.crearUsuario(usuario).isEmpty()){
-                status= HttpStatus.CREATED;
-            }
-        }
-        catch (RuntimeException e){ System.out.println(e.getMessage()); }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Result", "/Usuarios/"+status);
-        return new ResponseEntity(headers, status);
-    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> eliminarUsuario (@PathVariable("id") String id){
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -66,6 +54,36 @@ public class UsuarioControlador {
         }
         return new ResponseEntity(status);
     }
+    // LOGIN / REGISTRO =======================================================================
+    @PostMapping("Registro")
+    public ResponseEntity<HttpHeaders> crearCuenta (@Valid @RequestBody User usuario){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        try {
+            if (!servicioUsuario.crearUsuario(usuario).isEmpty()){
+                status= HttpStatus.CREATED;
+            }
+        }
+        catch (RuntimeException e){ System.out.println(e.getMessage()); }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Result", "/Usuarios/"+status);
+        return new ResponseEntity(headers, status);
+    }
+
+    @GetMapping("Registro/{token}")
+    public ResponseEntity<HttpStatus> validarCuenta(@PathVariable("token") String token){
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+            servicioUsuario.desbloquearUsuario(token);
+        }
+        catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+
+        return new ResponseEntity<>(status);
+    }
+
 
     // Validacion =============================================================================
 

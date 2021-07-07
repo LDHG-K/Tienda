@@ -1,12 +1,11 @@
-package com.Quda.Backend.Servicio;
+package com.Quda.Backend.TiendaApp.Servicio;
 
-import com.Quda.Backend.Entidades.Person;
-import com.Quda.Backend.Entidades.User;
-import com.Quda.Backend.Repositorio.JpaPersona;
+import com.Quda.Backend.TiendaApp.Entidad.Person;
+import com.Quda.Backend.TiendaApp.Entidad.User;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaPersona;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +46,7 @@ public class ServicioPersona {
 
         personaEditada.setPersonId(personaAntigua.getPersonId());
         personaEditada.setPersonCreationDate(personaAntigua.getPersonCreationDate());
-        personaEditada.setRoleId(personaAntigua.getRoleId());
+
 
         System.out.println( personaEditada.toString());
 

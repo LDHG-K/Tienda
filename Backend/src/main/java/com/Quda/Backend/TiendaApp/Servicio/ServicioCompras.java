@@ -1,12 +1,10 @@
-package com.Quda.Backend.Servicio;
-import com.Quda.Backend.Entidades.Bill;
-import com.Quda.Backend.Entidades.Product;
+package com.Quda.Backend.TiendaApp.Servicio;
+import com.Quda.Backend.TiendaApp.Entidad.Bill;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 @Service

@@ -1,6 +1,6 @@
-package com.Quda.Backend.Repositorio;
+package com.Quda.Backend.TiendaApp.Repositorio;
 
-import com.Quda.Backend.Entidades.Supplier;
+import com.Quda.Backend.TiendaApp.Entidad.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
