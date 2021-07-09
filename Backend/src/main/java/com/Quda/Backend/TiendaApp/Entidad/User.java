@@ -1,13 +1,11 @@
 package com.Quda.Backend.TiendaApp.Entidad;
 
-import com.Quda.Backend.LoginApp.Token.TokenConfirmacion;
+import com.Quda.Backend.LoginApp.RegisterToken.TokenConfirmacion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Builder;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
@@ -16,9 +14,6 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Builder
 @AllArgsConstructor

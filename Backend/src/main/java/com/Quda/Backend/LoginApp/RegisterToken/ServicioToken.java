@@ -1,7 +1,5 @@
-package com.Quda.Backend.LoginApp.Token;
+package com.Quda.Backend.LoginApp.RegisterToken;
 
-import antlr.Token;
-import com.Quda.Backend.TiendaApp.Servicio.ServicioUsuario;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

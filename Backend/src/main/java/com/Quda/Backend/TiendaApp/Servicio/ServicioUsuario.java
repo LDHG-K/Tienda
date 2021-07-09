@@ -1,7 +1,7 @@
 package com.Quda.Backend.TiendaApp.Servicio;
 
-import com.Quda.Backend.LoginApp.Token.ServicioToken;
-import com.Quda.Backend.LoginApp.Token.TokenConfirmacion;
+import com.Quda.Backend.LoginApp.RegisterToken.ServicioToken;
+import com.Quda.Backend.LoginApp.RegisterToken.TokenConfirmacion;
 import com.Quda.Backend.MailApp.Servicios.ServicioMail;
 import com.Quda.Backend.TiendaApp.Entidad.Person;
 import com.Quda.Backend.TiendaApp.Entidad.User;
@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +42,7 @@ public class ServicioUsuario {
     }
 
     @Transactional
-    public Optional<User> crearUsuario(User usuario){
+    public Optional<User> crearUsuario(User usuario) throws MessagingException, UnsupportedEncodingException {
         usuario.getPerson().setPersonCreationDate(new Date());
         Person person = jpaPersona.save(usuario.getPerson());
 
@@ -64,7 +66,7 @@ public class ServicioUsuario {
                 .build();
         servicioToken.guardarToken(confirmacion);
 
-        servicioMail.enviarMensajeSimple(person.getPersonEmail(),"VERIFICACION DE CUENTA", "http://localhost:8080/Usuarios/Registro/"+tokenID);
+        servicioMail.enviarMensajeConHtml(person.getPersonEmail(),"Verificacion de cuenta",person.getPersonName(),tokenID);
 
         return user;
     }

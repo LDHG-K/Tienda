@@ -1,4 +1,4 @@
-package com.Quda.Backend.LoginApp.Token;
+package com.Quda.Backend.LoginApp.RegisterToken;
 
 import com.Quda.Backend.TiendaApp.Entidad.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
