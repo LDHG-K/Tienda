@@ -27,7 +27,8 @@ public class ConfiguracionSeguridadWeb extends WebSecurityConfigurerAdapter {
                .antMatchers("/Productos/**").permitAll()
                .anyRequest()
                .authenticated().and()
-               .formLogin();
+               .httpBasic();
+                //.formLogin();
     }
 
     @Override
