@@ -1,5 +1,5 @@
 package com.Quda.Backend.TiendaApp.Controladores;
-import com.Quda.Backend.LoginApp.Token.ServicioToken;
+
 import com.Quda.Backend.TiendaApp.Entidad.User;
 import com.Quda.Backend.TiendaApp.Servicio.ServicioUsuario;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -63,7 +65,7 @@ public class UsuarioControlador {
                 status= HttpStatus.CREATED;
             }
         }
-        catch (RuntimeException e){ System.out.println(e.getMessage()); }
+        catch (RuntimeException | MessagingException | UnsupportedEncodingException e){ System.out.println(e.getMessage()); }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Result", "/Usuarios/"+status);
         return new ResponseEntity(headers, status);
