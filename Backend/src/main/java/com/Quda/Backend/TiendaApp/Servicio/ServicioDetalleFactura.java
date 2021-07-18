@@ -90,4 +90,28 @@ public class ServicioDetalleFactura {
         return  jpaDetalleFactura.buscarPorIdfactura(idFactura);
     }
 
+    //=============================================================================
+
+    public String generarHtmlNotificacionCorreo(Integer idFactura){
+
+        List<BillsProduct> detalles = buscarDetallesDeUnaFactura(idFactura);
+        String respuesta = "";
+        for (BillsProduct detalle : detalles)
+        {
+            Optional<Product> producto = servicioProducto.buscarProducto(detalle.getId().getFkProductSerial());
+
+            respuesta+="<tr>\n" +
+                    "           <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
+                    "                "+producto.get().getProductName()+" x"+detalle.getUnits()+"\n" +
+                    "           </td>\n" +
+                    "           <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
+                    "                $"+detalle.getTotal()+"\n" +
+                    "           </td>\n" +
+                    "   </tr>\n"
+            ;
+        }
+        return respuesta;
+    }
+
+
 }
