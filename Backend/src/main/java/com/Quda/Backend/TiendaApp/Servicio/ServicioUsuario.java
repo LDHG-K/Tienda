@@ -2,7 +2,7 @@ package com.Quda.Backend.TiendaApp.Servicio;
 
 import com.Quda.Backend.LoginApp.RegisterToken.ServicioToken;
 import com.Quda.Backend.LoginApp.RegisterToken.TokenConfirmacion;
-import com.Quda.Backend.MailApp.Servicios.ServicioMail;
+import com.Quda.Backend.MailApp.Controladores.MailController;
 import com.Quda.Backend.TiendaApp.Entidad.Person;
 import com.Quda.Backend.TiendaApp.Entidad.User;
 import com.Quda.Backend.TiendaApp.Repositorio.JpaPersona;
@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
@@ -29,7 +28,7 @@ public class ServicioUsuario {
     private final JpaPersona jpaPersona;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ServicioToken servicioToken;
-    private final ServicioMail servicioMail;
+    private final MailController mailController;
 
     public Optional<User> buscarUsuario(String id){
         return jpaUsuario.findById(id);
@@ -66,7 +65,7 @@ public class ServicioUsuario {
                 .build();
         servicioToken.guardarToken(confirmacion);
 
-        servicioMail.enviarMensajeConHtml(person.getPersonEmail(),"Verificacion de cuenta",person.getPersonName(),tokenID);
+        mailController.correoRegistro(person.getPersonEmail(),"Verificacion de cuenta",person.getPersonName(),tokenID);
 
         return user;
     }

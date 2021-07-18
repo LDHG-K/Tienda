@@ -31,17 +31,19 @@ public class ServicioDetalleFactura {
 
         ArrayList<BigDecimal> totales = new ArrayList<BigDecimal>();
         productos.forEach((k,v) -> {
+
+            Optional<Product> producto = servicioProducto.buscarProducto(k);
             // Llaves
             BillsProductPK llaves = crearLLaves(idFactura,k);
             // Total venta del producto (valorProducto * total unidades)
-            BigDecimal valorRegistro = calcularTotalProducto(k,v);
+            BigDecimal valorRegistro = calcularTotalProducto(producto.get(),v);
             // Descontar unidades del producto
 
             //Crear Registro del detalle
             BillsProduct registro = BillsProduct.builder()
                     .id(llaves)
-                    .discount(null)
-                    .tax(null)
+                    .discount(producto.get().getActualDiscount())
+                    .tax(producto.get().getActualTax())
                     .units(v)
                     .total(valorRegistro)
                     .build();
@@ -58,12 +60,15 @@ public class ServicioDetalleFactura {
         actualizarTotalFactura(total,idFactura);
     }
 
-    private BigDecimal calcularTotalProducto(Integer k, Integer v){
-        Optional<Product> producto = servicioProducto.buscarProducto(k);
-        BigDecimal itemCost=new BigDecimal(BigInteger.ZERO,  2);
+    private BigDecimal calcularTotalProducto(Product producto, Integer v){
+        BigDecimal itemCost =new BigDecimal(BigInteger.ZERO,  2);
         BigDecimal totalCost=new BigDecimal(BigInteger.ZERO,  2);
 
-        itemCost = producto.get().getProductSellPrice().multiply(new BigDecimal(v));
+        BigDecimal discount = producto.getProductSellPrice().multiply(producto.getActualDiscount());
+        BigDecimal itemConDescuento = producto.getProductSellPrice().subtract(discount);
+        BigDecimal itemConDescuentoEImpuesto = itemConDescuento.multiply(producto.getActualTax());
+        totalCost = itemConDescuentoEImpuesto.multiply(new BigDecimal(v));
+
         return totalCost.add(itemCost);
     }
 
@@ -84,4 +89,5 @@ public class ServicioDetalleFactura {
     public List<BillsProduct> buscarDetallesDeUnaFactura(Integer idFactura){
         return  jpaDetalleFactura.buscarPorIdfactura(idFactura);
     }
+
 }

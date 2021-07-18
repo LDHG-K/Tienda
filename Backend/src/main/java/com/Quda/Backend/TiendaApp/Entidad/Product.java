@@ -38,6 +38,12 @@ public class Product implements Serializable {
 	@Column(name="product_image")
 	private Integer productImage;
 
+	@Column(name ="product_actual_discount")
+	private BigDecimal actualDiscount;
+
+	@Column(name ="product_actual_tax")
+	private BigDecimal actualTax;
+
 	@Size(min = 3, max = 30, message
 			= "El nombre del producto no debe de ser mayor a 30 o menor a 3 caracteres")
 	@Column(name="product_name")
