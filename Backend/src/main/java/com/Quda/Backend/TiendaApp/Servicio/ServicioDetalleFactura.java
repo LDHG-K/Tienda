@@ -33,10 +33,13 @@ public class ServicioDetalleFactura {
         productos.forEach((k,v) -> {
 
             Optional<Product> producto = servicioProducto.buscarProducto(k);
+
             // Llaves
             BillsProductPK llaves = crearLLaves(idFactura,k);
+
             // Total venta del producto (valorProducto * total unidades)
             BigDecimal valorRegistro = calcularTotalProducto(producto.get(),v);
+
             // Descontar unidades del producto
 
             //Crear Registro del detalle
@@ -61,15 +64,16 @@ public class ServicioDetalleFactura {
     }
 
     private BigDecimal calcularTotalProducto(Product producto, Integer v){
-        BigDecimal itemCost =new BigDecimal(BigInteger.ZERO,  2);
+
         BigDecimal totalCost=new BigDecimal(BigInteger.ZERO,  2);
 
         BigDecimal discount = producto.getProductSellPrice().multiply(producto.getActualDiscount());
         BigDecimal itemConDescuento = producto.getProductSellPrice().subtract(discount);
-        BigDecimal itemConDescuentoEImpuesto = itemConDescuento.multiply(producto.getActualTax());
-        totalCost = itemConDescuentoEImpuesto.multiply(new BigDecimal(v));
+        BigDecimal impuesto = itemConDescuento.multiply(producto.getActualTax());
+        BigDecimal itemConDescuentoEImpuesto = itemConDescuento.add(impuesto);
 
-        return totalCost.add(itemCost);
+        totalCost = itemConDescuentoEImpuesto.multiply(new BigDecimal(v));
+        return totalCost;
     }
 
     private void actualizarTotalFactura(BigDecimal total, Integer idFactura){
@@ -90,28 +94,8 @@ public class ServicioDetalleFactura {
         return  jpaDetalleFactura.buscarPorIdfactura(idFactura);
     }
 
-    //=============================================================================
 
-    public String generarHtmlNotificacionCorreo(Integer idFactura){
 
-        List<BillsProduct> detalles = buscarDetallesDeUnaFactura(idFactura);
-        String respuesta = "";
-        for (BillsProduct detalle : detalles)
-        {
-            Optional<Product> producto = servicioProducto.buscarProducto(detalle.getId().getFkProductSerial());
-
-            respuesta+="<tr>\n" +
-                    "           <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
-                    "                "+producto.get().getProductName()+" x"+detalle.getUnits()+"\n" +
-                    "           </td>\n" +
-                    "           <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
-                    "                $"+detalle.getTotal()+"\n" +
-                    "           </td>\n" +
-                    "   </tr>\n"
-            ;
-        }
-        return respuesta;
-    }
 
 
 }

@@ -5,6 +5,7 @@ import com.Quda.Backend.TiendaApp.Servicio.ServicioCompras;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/Comprar")
+@PreAuthorize("hasRole(\"1\")")
 @AllArgsConstructor
 public class ComprarControlador {
 

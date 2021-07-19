@@ -1,38 +1,72 @@
 package com.Quda.Backend.MailApp.Correos;
 
-import com.Quda.Backend.TiendaApp.Entidad.Product;
+import com.Quda.Backend.TiendaApp.Entidad.*;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaCiudad;
+import com.Quda.Backend.TiendaApp.Repositorio.JpaDepartamento;
+import com.Quda.Backend.TiendaApp.Servicio.ServicioProducto;
+import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
+@Service
 public class CorreoCompra {
 
     private final JavaMailSender javaMailSender;
+    private final ServicioProducto servicioProducto;
+    private final JpaCiudad jpaCiudad;
+    private final JpaDepartamento jpaDepartamento;
 
-    public CorreoCompra(JavaMailSender javaMailSender){
-        this.javaMailSender=javaMailSender;
-    }
+    public void correoNotificacionCompra(List<BillsProduct> detalles, BigDecimal total, User usuario, Bill factura ) throws MessagingException, UnsupportedEncodingException {
 
-    public void correoNotificacionCompra(String correo, String asunto, String nombre, String idFactura, HashMap<Integer,Integer> listaProductos) throws MessagingException, UnsupportedEncodingException {
 
-        String lineaProductos;
 
         MimeMessage mensajeEditado = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mensajeEditado);
 
         helper.setFrom("quda.maquillaje@gmail.com", "Equipo de ventas");
-        helper.setTo(correo);
-        helper.setSubject(asunto);
-        //Esta linea crea la lista de productos
-
+        helper.setTo(usuario.getPerson().getPersonEmail());
+        helper.setSubject("Notificacion de compra en Quda");
 
         //Mensaje parametrizado
-        helper.setText("<!DOCTYPE html>\n" +
+        helper.setText(generarMensajeNotificacion(detalles,total,usuario,factura), true);
+        javaMailSender.send(mensajeEditado);
+    }
+
+
+    // Crea un correo para ser enviado al generar la factura
+    // Correo =====================================================================
+
+    private String generarMensajeNotificacion(List<BillsProduct> detalles, BigDecimal total, User usuario, Bill factura ){
+
+        String detallesHtml = generarHtmlDetalles(detalles);
+        String envioHtml = generarHtmlEnvio(factura);
+        String totalHtml = generarHtmlTotal(total);
+
+        String nombre = usuario.getPerson().getPersonName();
+        Integer idFactura = factura.getBillId();
+        String direccion = factura.getBillSendAddres();
+
+        City ciudad = jpaCiudad.getById(factura.getCityId());
+        Department departamento = jpaDepartamento.getById(ciudad.getDepartmentId());
+
+        String ciudadDestino = ciudad.getCityName() + "-" + departamento.getDepartmentName();
+        String fechaLlegada = generarFechaDeLlegada();
+
+        String mensaje = "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
                 "<title></title>\n" +
@@ -78,7 +112,7 @@ public class CorreoCompra {
                 "\n" +
                 "<!-- HIDDEN PREHEADER TEXT -->\n" +
                 "<div style=\"display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Open Sans, Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;\">\n" +
-                "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus dolor aliquid omnis consequatur est deserunt, odio neque blanditiis aspernatur, mollitia ipsa distinctio, culpa fuga obcaecati!\n" +
+                "¡Hola "+nombre+" aqui tienes el recibo de tu compra en Q'uda! \n" +
                 "</div>\n" +
                 "\n" +
                 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
@@ -162,7 +196,8 @@ public class CorreoCompra {
                 "                                        "+idFactura+"\n" +
                 "                                    </td>\n" +
                 "                                </tr>\n" +
-                                                lineaProductos+
+                detallesHtml+
+                envioHtml+
                 "                            </table>\n" +
                 "                        </td>\n" +
                 "                    </tr>\n" +
@@ -170,12 +205,8 @@ public class CorreoCompra {
                 "                        <td align=\"left\" style=\"padding-top: 20px;\">\n" +
                 "                            <table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\">\n" +
                 "                                <tr>\n" +
-                "                                    <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #E9967A; border-bottom: 3px solid #E9967A;\">\n" +
-                "                                        TOTAL\n" +
-                "                                    </td>\n" +
-                "                                    <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #E9967A; border-bottom: 3px solid #E9967A;\">\n" +
-                "                                        $13.500.00\n" +
-                "                                    </td>\n" +
+                totalHtml+
+
                 "                                </tr>\n" +
                 "                            </table>\n" +
                 "                        </td>\n" +
@@ -209,7 +240,7 @@ public class CorreoCompra {
                 "                                    <tr>\n" +
                 "                                        <td align=\"left\" valign=\"top\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;\">\n" +
                 "                                            <p style=\"font-weight: 800;\">Direccion de envio</p>\n" +
-                "                                            <p>Calle 77 #4-13 Jardin atolsure<br>Al frente de las canchas \"El monumental\"<br>Ibagué, Tolima 730004</p>\n" +
+                "                                            <p>"+direccion+"<br>"+ciudadDestino+"</p>\n" +
                 "\n" +
                 "                                        </td>\n" +
                 "                                    </tr>\n" +
@@ -224,7 +255,7 @@ public class CorreoCompra {
                 "                                    <tr>\n" +
                 "                                        <td align=\"left\" valign=\"top\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;\">\n" +
                 "                                            <p style=\"font-weight: 800;\">Fecha estimada de envio</p>\n" +
-                "                                            <p>5/7/2021 </p>\n" +
+                "                                            <p>"+fechaLlegada+"</p>\n" +
                 "                                        </td>\n" +
                 "                                    </tr>\n" +
                 "                                </table>\n" +
@@ -326,34 +357,82 @@ public class CorreoCompra {
                 "        </td>\n" +
                 "    </tr>\n" +
                 "</table>\n" +
-                "    <!-- LITMUS ATTRIBUTION -->\n" +
-                "    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
-                "        <tr>\n" +
-                "            <td bgcolor=\"#ffffff\" align=\"center\">\n" +
-                "                <!--[if (gte mso 9)|(IE)]>\n" +
-                "<table align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"600\">\n" +
-                "<tr>\n" +
-                "<td align=\"center\" valign=\"top\" width=\"600\">\n" +
-                "<![endif]-->\n" +
-                "                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width: 600px;\" >\n" +
-                "                    <tr>\n" +
-                "                        <td bgcolor=\"#ffffff\" align=\"center\" style=\"padding: 30px 30px 30px 30px; color: #666666; font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;\" >\n" +
-                "                            <p style=\"margin: 0;\"> <a href=\"https://litmus.com?utm_campaign=litmus_templates&utm_source=litmus_community&utm_medium=templates\" style=\"color: #5db3ec;\"></a></p>\n" +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                </table>\n" +
-                "                <!--[if (gte mso 9)|(IE)]>\n" +
-                "</td>\n" +
-                "</tr>\n" +
-                "</table>\n" +
-                "<![endif]-->\n" +
-                "            </td>\n" +
-                "        </tr>\n" +
-                "    </table>\n" +
-                "    <!-- END LITMUS ATTRIBUTION -->\n" +
+                "    \n" +
                 "</body>\n" +
-                "</html>", true);
-        javaMailSender.send(mensajeEditado);
+                "</html>";
+
+        return  mensaje;
     }
+
+    private String generarHtmlDetalles(List<BillsProduct> detalles){
+
+        String respuesta = "";
+        for (BillsProduct detalle : detalles)
+        {
+            Optional<Product> producto = servicioProducto.buscarProducto(detalle.getId().getFkProductSerial());
+            DecimalFormat formato = new DecimalFormat("#,###.00");
+            String valorFormateado = formato.format(detalle.getTotal());
+
+
+            respuesta+="<tr>\n" +
+                    "           <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
+                    "                "+producto.get().getProductName()+" x"+detalle.getUnits()+"\n" +
+                    "           </td>\n" +
+                    "           <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
+                    "                $"+valorFormateado+"\n" +
+                    "           </td>\n" +
+                    "   </tr>\n"
+            ;
+        }
+
+        return respuesta;
+    }
+
+    private String generarHtmlEnvio(Bill factura){
+        String respuesta = "";
+            String valorFormateado="";
+            if (factura.getBillSendCost().compareTo(BigDecimal.ZERO)==0){
+                valorFormateado="Gratis :)";
+            }else{
+                DecimalFormat formato = new DecimalFormat("#,###.00");
+                valorFormateado = formato.format(factura.getBillSendCost());
+            }
+            respuesta+="<tr>\n" +
+                    "           <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
+                    "                "+"Envio"+"\n" +
+                    "           </td>\n" +
+                    "           <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;\">\n" +
+                    "                $"+valorFormateado+"\n" +
+                    "           </td>\n" +
+                    "   </tr>\n"
+            ;
+        return respuesta;
+    }
+
+    private String generarHtmlTotal(BigDecimal total){
+
+        DecimalFormat formato = new DecimalFormat("#,###.00");
+        String valorFormateado = formato.format(total);
+
+        return " <td width=\"75%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #E9967A; border-bottom: 3px solid #E9967A;\">\n" +
+                "                                        TOTAL\n" +
+                "                                    </td>\n" +
+                "                                    <td width=\"25%\" align=\"left\" style=\"font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #E9967A; border-bottom: 3px solid #E9967A;\">\n" +
+                "                                        $"+valorFormateado+"\n" +
+                "                                    </td>";
+    }
+
+    private String generarFechaDeLlegada(){
+
+        LocalDateTime fecha = LocalDateTime.now();
+        LocalDate hoy = LocalDate.now();
+
+        if(hoy.getDayOfWeek().equals(DayOfWeek.SATURDAY)) fecha = fecha.plusDays(6);
+        else if (hoy.getDayOfWeek().equals(DayOfWeek.SUNDAY)) fecha = fecha.plusDays(5);
+        else{ fecha = fecha.plusDays(4); }
+        DateTimeFormatter isoFecha = DateTimeFormatter.ISO_LOCAL_DATE;
+        return fecha.format(isoFecha);
+    }
+
 
 }

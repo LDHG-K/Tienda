@@ -49,7 +49,7 @@ public class UserPrincipal implements UserDetails {
         GrantedAuthority rolAuthority = new SimpleGrantedAuthority("ROLE_"+user.getUserRole());
         authorities.add(rolAuthority);
 
-        System.out.println(authorities);
+        //System.out.println(authorities);
         return authorities;
     }
 
