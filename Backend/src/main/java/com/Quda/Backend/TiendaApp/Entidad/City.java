@@ -1,5 +1,7 @@
 package com.Quda.Backend.TiendaApp.Entidad;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name="cities")
 @NamedQuery(name="City.findAll", query="SELECT c FROM City c")
+@Data
 public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -22,13 +25,16 @@ public class City implements Serializable {
 	@Column(name="city_name")
 	private String cityName;
 
+	@Column(name="fk_departments_id")
+	private Integer departmentId;
+
 	//bi-directional many-to-one association to Bill
 	@OneToMany(mappedBy="city")
 	private List<Bill> bills;
 
 	//bi-directional many-to-one association to Department
 	@ManyToOne
-	@JoinColumn(name="fk_departments_id")
+	@JoinColumn(name="fk_departments_id",insertable = false, updatable = false)
 	private Department department;
 
 	//bi-directional many-to-one association to State
