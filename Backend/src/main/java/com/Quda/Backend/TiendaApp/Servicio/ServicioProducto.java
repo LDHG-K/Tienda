@@ -108,4 +108,17 @@ public class ServicioProducto {
         }
         return productoValidar;
     }
+
+    public List<Product> listarYBuscarProductos(HashMap<Integer,Integer> listaProductos){
+
+        List<Product> lista = null;
+
+        listaProductos.forEach((k,v)->{
+            Optional<Product> product = buscarProducto(k);
+            lista.add(product.get());
+        });
+
+        return lista;
+    }
+
 }
