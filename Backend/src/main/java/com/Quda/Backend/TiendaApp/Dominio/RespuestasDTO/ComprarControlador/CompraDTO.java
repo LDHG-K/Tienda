@@ -1,4 +1,4 @@
-package com.Quda.Backend.TiendaApp.Controladores.RespuestasDTO.ComprarControlador;
+package com.Quda.Backend.TiendaApp.Dominio.DTOS.RespuestasDTO.ComprarControlador;
 
 import com.Quda.Backend.TiendaApp.Entidad.Bill;
 import lombok.Data;

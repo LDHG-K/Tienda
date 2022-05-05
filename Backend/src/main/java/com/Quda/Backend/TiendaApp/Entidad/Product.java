@@ -1,9 +1,7 @@
 package com.Quda.Backend.TiendaApp.Entidad;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -24,7 +22,9 @@ import java.util.List;
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Builder
+@Getter
+@Setter
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 

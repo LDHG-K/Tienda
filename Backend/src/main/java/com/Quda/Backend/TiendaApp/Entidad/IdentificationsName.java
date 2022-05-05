@@ -15,7 +15,7 @@ public class IdentificationsName implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="\"identification _id\"")
+	@Column(name="identification_id")
 	private Integer identification_Id;
 
 	@Column(name="identification_name")

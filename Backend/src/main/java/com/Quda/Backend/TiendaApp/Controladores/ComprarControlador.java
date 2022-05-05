@@ -1,6 +1,6 @@
 package com.Quda.Backend.TiendaApp.Controladores;
 
-import com.Quda.Backend.TiendaApp.Controladores.RespuestasDTO.ComprarControlador.CompraDTO;
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.RespuestasDTO.ComprarControlador.CompraDTO;
 import com.Quda.Backend.TiendaApp.Servicio.ServicioCompras;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;

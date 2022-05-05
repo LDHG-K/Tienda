@@ -1,6 +1,6 @@
 package com.Quda.Backend.TiendaApp.Controladores;
 
-import com.Quda.Backend.TiendaApp.Controladores.RespuestasDTO.FacturaControlador.FacturaCompletaDTO;
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.RespuestasDTO.FacturaControlador.FacturaCompletaDTO;
 import com.Quda.Backend.TiendaApp.Entidad.Bill;
 import com.Quda.Backend.TiendaApp.Servicio.ServicioDetalleFactura;
 import com.Quda.Backend.TiendaApp.Servicio.ServicioFactura;

@@ -1,6 +1,7 @@
 package com.Quda.Backend.TiendaApp.Controladores;
 
 
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.Producto;
 import com.Quda.Backend.TiendaApp.Entidad.Product;
 import com.Quda.Backend.TiendaApp.Servicio.ServicioProducto;
 import lombok.AllArgsConstructor;
@@ -28,11 +29,12 @@ public class ProductoControlador {
 
     // CRUD   =========================================================================================
     @PostMapping
-    public ResponseEntity<Product> crearProducto(@Valid @RequestBody Product product){
+    public ResponseEntity<Producto> crearProducto(@Valid @RequestBody Producto product){
         Optional<Product> response = null;
         HttpStatus status = HttpStatus.CREATED;
+        Product p = servicioProducto.DTOToEntity(product);
         try{
-            response = servicioProducto.crearProducto(product);
+            response = servicioProducto.crearProducto(p);
         }catch (RuntimeException e){
             System.out.println("Error al crear el producto por : "+e.getMessage());
             status = HttpStatus.BAD_REQUEST;
@@ -40,11 +42,11 @@ public class ProductoControlador {
         return new ResponseEntity(response,status);
     }
     @GetMapping("/{id}")
-    public HttpEntity<Product> buscarProducto(@PathVariable("id") Integer id){
-        Optional<Product> response = null;
+    public HttpEntity<Producto> buscarProducto(@PathVariable("id") Integer id){
+        Optional<Producto> response = null;
         HttpStatus status = HttpStatus.FOUND;
         try {
-            response = servicioProducto.buscarProducto(id);
+            response = Optional.of(servicioProducto.EntityToDTO(servicioProducto.buscarProducto(id).get()));
         }catch (RuntimeException e) {
             System.out.println(e.getMessage());
             status = HttpStatus.NOT_FOUND;
@@ -52,11 +54,12 @@ public class ProductoControlador {
         return new ResponseEntity(response,status);
     }
     @PutMapping
-    public ResponseEntity<HttpStatus> actualizarProducto(@Valid @RequestBody Product product){
-        Optional<Product> response = null;
+    public ResponseEntity<HttpStatus> actualizarProducto(@Valid @RequestBody Producto producto){
+        Optional<Producto> response = null;
         HttpStatus status = HttpStatus.OK;
+        Product p =  servicioProducto.DTOToEntity(producto);
         try{
-            response = servicioProducto.editarProducto(product);
+            response =Optional.of(servicioProducto.EntityToDTO(servicioProducto.editarProducto(p).get()));
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
             status = HttpStatus.NOT_FOUND;
@@ -96,24 +99,24 @@ public class ProductoControlador {
     // LISTAR   =======================================================================================
 
     @GetMapping("/all")
-    public ResponseEntity<List<Product>> listarTodos(){
-        return new ResponseEntity(servicioProducto.listarProductos(), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Producto>> listarTodos(){
+        return new ResponseEntity(servicioProducto.ListEntityToListDTO(servicioProducto.listarProductos()), HttpStatus.ACCEPTED);
     }
     @GetMapping("/all-Disponibles")
-    public ResponseEntity<List<Product>> listarProductosDisponibles(){
-        return new ResponseEntity<>(servicioProducto.listarProductosDisponibles(),HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Producto>> listarProductosDisponibles(){
+        return new ResponseEntity<>(servicioProducto.ListEntityToListDTO(servicioProducto.listarProductosDisponibles()),HttpStatus.ACCEPTED);
     }
     @GetMapping("/Categoria/{id}")
-    public ResponseEntity<List<Product>> listarPorCategoria(@PathVariable ("id") Integer id){
-        return new ResponseEntity(servicioProducto.listarProductosCategoria(id), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Producto>> listarPorCategoria(@PathVariable ("id") Integer id){
+        return new ResponseEntity(servicioProducto.ListEntityToListDTO(servicioProducto.listarProductosCategoria(id)), HttpStatus.ACCEPTED);
     }
     @GetMapping("/Proveedor/{id}")
-    public ResponseEntity<List<Product>> listarPorProveedor(@PathVariable ("id") Integer id){
-        return new ResponseEntity(servicioProducto.listarProductosProveedor(id), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Producto>> listarPorProveedor(@PathVariable ("id") Integer id){
+        return new ResponseEntity(servicioProducto.ListEntityToListDTO(servicioProducto.listarProductosProveedor(id)), HttpStatus.ACCEPTED);
     }
     @GetMapping("/Objetivo/{id}")
-    public ResponseEntity<List<Product>> listarPorObjetivo(@PathVariable ("id") Integer id){
-        return new ResponseEntity(servicioProducto.listarProductosObjetivo(id), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Producto>> listarPorObjetivo(@PathVariable ("id") Integer id){
+        return new ResponseEntity(servicioProducto.ListEntityToListDTO(servicioProducto.listarProductosObjetivo(id)), HttpStatus.ACCEPTED);
     }
 
     // VALIDACION =====================================================================================

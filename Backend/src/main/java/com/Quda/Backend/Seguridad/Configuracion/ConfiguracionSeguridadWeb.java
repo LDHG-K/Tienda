@@ -28,11 +28,14 @@ public class ConfiguracionSeguridadWeb extends WebSecurityConfigurerAdapter {
                //.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                .authorizeRequests()
                .antMatchers("/Usuarios/Registro/**").permitAll()
+               //.antMatchers("/swagger-ui.html/**").permitAll()
+               //.antMatchers("/swagger-ui/**").permitAll()
+               //.antMatchers("/**").permitAll()
                //.antMatchers("/Productos/**").hasRole("1")
                .anyRequest()
                .authenticated().and()
                .httpBasic();
-                //.formLogin();
+               //.formLogin();
     }
 
     @Override

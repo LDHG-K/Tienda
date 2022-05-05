@@ -109,6 +109,7 @@ public class ServicioUsuario {
             throw new RuntimeException("Usuario ya ha sido validado");
         }
         user.get().setEnabled(true);
+        user.get().setLocked(true);
         jpaUsuario.save(user.get());
     }
 

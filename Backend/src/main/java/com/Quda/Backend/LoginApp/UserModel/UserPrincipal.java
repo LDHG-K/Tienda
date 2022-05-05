@@ -22,13 +22,14 @@ public class UserPrincipal implements UserDetails {
     public UserPrincipal(User user, JpaDetalleRol jpaDetalleRol){
         this.user=user;
         this.jpaDetalleRol = jpaDetalleRol;
+
     }
 
 
 
 
     public List<Long> listaDePermisos(){
-        List<RolePermissions> permisosDeRol = permisosDeRol= jpaDetalleRol.buscarRolPorPermisos(user.getUserRole());
+        List<RolePermissions> permisosDeRol = jpaDetalleRol.buscarRolPorPermisos(user.getUserRole());
         List<Long> res = permisosDeRol.stream().map(rolePermissions -> rolePermissions.getRolePermissionsPK().getPermissionId()).collect(Collectors.toList());
         return res;
     }
@@ -37,6 +38,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         //EXTRAE LA LISTA DE REFERENCIA DE LOS ROLES
@@ -49,7 +51,6 @@ public class UserPrincipal implements UserDetails {
         GrantedAuthority rolAuthority = new SimpleGrantedAuthority("ROLE_"+user.getUserRole());
         authorities.add(rolAuthority);
 
-        //System.out.println(authorities);
         return authorities;
     }
 

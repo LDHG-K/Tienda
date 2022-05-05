@@ -1,11 +1,13 @@
 package com.Quda.Backend.TiendaApp.Servicio;
 
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.Producto;
 import com.Quda.Backend.TiendaApp.Entidad.Product;
 import com.Quda.Backend.TiendaApp.Repositorio.JpaProducto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +20,7 @@ public class ServicioProducto {
 
 
     // CRUD =================================================================================
-    public Optional<Product> buscarProducto(Integer id){
-        return jpaProducto.findById(id);
-    }
+    public Optional<Product> buscarProducto(Integer id){return jpaProducto.findById(id);}
 
     public Optional<Product> crearProducto(Product producto){
         if (!jpaProducto.findById(producto.getProductSerial()).isEmpty()){
@@ -109,9 +109,57 @@ public class ServicioProducto {
         return productoValidar;
     }
 
+    public Producto EntityToDTO(Product p){
+
+        Producto producto = Producto.builder()
+                .actualDiscount(p.getActualDiscount())
+                .actualTax(p.getActualTax())
+                .categoryId(p.getCategoryId())
+                .objetiveId(p.getObjetiveId())
+                .productDescription(p.getProductDescription())
+                .productImage(p.getProductImage())
+                .productName(p.getProductName())
+                .productSellPrice(p.getProductSellPrice())
+                .productSerial(p.getProductSerial())
+                .productStock(p.getProductStock())
+                .supplierId(p.getSupplierId())
+                .build();
+
+        return producto;
+    }
+
+    public Product DTOToEntity(Producto p){
+
+        Product product = Product.builder()
+                .actualDiscount(p.getActualDiscount())
+                .actualTax(p.getActualTax())
+                .categoryId(p.getCategoryId())
+                .productImage(p.getProductImage())
+                .productName(p.getProductName())
+                .productDescription(p.getProductDescription())
+                .productSerial(p.getProductSerial())
+                .productStock(p.getProductStock())
+                .productSellPrice(p.getProductSellPrice())
+                .objetiveId(p.getObjetiveId())
+                .supplierId(p.getSupplierId())
+                .build();
+
+        return product;
+    }
+
+    public List<Producto> ListEntityToListDTO(List<Product> products){
+
+        List<Producto> lista = new ArrayList<>();
+        products.forEach(pe->{
+            Producto p = EntityToDTO(pe);
+            lista.add(p);
+        });
+        return lista;
+    }
+
     public List<Product> listarYBuscarProductos(HashMap<Integer,Integer> listaProductos){
 
-        List<Product> lista = null;
+        List<Product> lista = new ArrayList<>();
 
         listaProductos.forEach((k,v)->{
             Optional<Product> product = buscarProducto(k);
