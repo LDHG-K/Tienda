@@ -7,6 +7,7 @@ import com.Quda.Backend.TiendaApp.Repositorio.JpaPersona;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,13 +55,25 @@ public class ServicioPersona {
         return Optional.ofNullable(jpaPersona.save(personaEditada));
     }
 
+
+
     //LISTAR =========================================================================
 
-    public List<Person> enlistarPersonas(Integer estado){
+    public List<Persona> enlistarPersonas(Integer estado){
+
         if (estado<=0 || estado>9){
             throw new RuntimeException("Estado no Existe");
         }
-        return jpaPersona.buscarPersonasPorEstado(estado);
+        List<Person> p = jpaPersona.buscarPersonasPorEstado(estado);
+
+        List<Persona> lp = new ArrayList<>();
+        p.forEach(person -> {
+            lp.add(servicioUsuario.personaEntityToPersonaDTO(person));
+        });
+
+        return lp;
     }
+
+
 
 }
