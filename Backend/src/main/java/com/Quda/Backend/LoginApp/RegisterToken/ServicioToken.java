@@ -17,7 +17,7 @@ public class ServicioToken {
     }
 
     public TokenConfirmacion validarToken(String token){
-        LocalDateTime tiempoValidacion =LocalDateTime.now();
+
         TokenConfirmacion tokenAConfirmar =null;
         try{
              tokenAConfirmar = jpaToken.buscarToken(token);
@@ -25,7 +25,7 @@ public class ServicioToken {
         catch (RuntimeException e){
             throw e;
         }
-
+        LocalDateTime tiempoValidacion =LocalDateTime.now();
         tokenAConfirmar.setConfirmedAt(tiempoValidacion);
 
             if (LocalDateTime.now().isAfter(tokenAConfirmar.getExpired())){

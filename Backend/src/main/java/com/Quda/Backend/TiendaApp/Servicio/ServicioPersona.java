@@ -1,5 +1,6 @@
 package com.Quda.Backend.TiendaApp.Servicio;
 
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.Persona;
 import com.Quda.Backend.TiendaApp.Entidad.Person;
 import com.Quda.Backend.TiendaApp.Entidad.User;
 import com.Quda.Backend.TiendaApp.Repositorio.JpaPersona;

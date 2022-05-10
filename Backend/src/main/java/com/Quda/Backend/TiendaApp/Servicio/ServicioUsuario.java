@@ -3,6 +3,8 @@ package com.Quda.Backend.TiendaApp.Servicio;
 import com.Quda.Backend.LoginApp.RegisterToken.ServicioToken;
 import com.Quda.Backend.LoginApp.RegisterToken.TokenConfirmacion;
 import com.Quda.Backend.MailApp.Controladores.MailController;
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.Persona;
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.Usuario;
 import com.Quda.Backend.TiendaApp.Entidad.Person;
 import com.Quda.Backend.TiendaApp.Entidad.User;
 import com.Quda.Backend.TiendaApp.Repositorio.JpaPersona;
@@ -54,6 +56,8 @@ public class ServicioUsuario {
         usuario.setUserRole((Long.parseLong("1")));
         usuario.setStateId(1);
         usuario.setPersonId(person.getPersonId());
+        usuario.setLocked(false);
+        usuario.setEnabled(false);
         Optional<User> user = Optional.ofNullable(jpaUsuario.save(usuario));
 
         String tokenID = UUID.randomUUID().toString();
@@ -66,6 +70,7 @@ public class ServicioUsuario {
         servicioToken.guardarToken(confirmacion);
 
         mailController.correoRegistro(person.getPersonEmail(),"Verificacion de cuenta",person.getPersonName(),tokenID);
+        System.out.println(tokenID);
 
         return user;
     }
@@ -74,6 +79,7 @@ public class ServicioUsuario {
         return jpaUsuario.findAll();
     }
 
+    //TODO -> Corregir la logica del metodo que actualiza el usuario, revisar cambio de usuario y contrasena
     @Transactional
     public Optional<User> editarUsuario(User usuario, String id)
     {
@@ -105,6 +111,7 @@ public class ServicioUsuario {
 
         TokenConfirmacion tokenValidado = servicioToken.validarToken(token);
         Optional<User> user = buscarUsuario(tokenValidado.getUserId());
+
         if (user.get().getEnabled()==true){
             throw new RuntimeException("Usuario ya ha sido validado");
         }
@@ -113,7 +120,57 @@ public class ServicioUsuario {
         jpaUsuario.save(user.get());
     }
 
+    public Usuario usuarioEntityToUsuarioDTO(User user){
 
+        Usuario u = Usuario.builder()
+                .userNickName(user.getUserNickName())
+                .userPerson(personaEntityToPersonaDTO(user.getPerson()) )
+                .userPassword(user.getUserPassword())
+                .build();
+        return u;
+    }
 
+    public User usuarioDTOToUsuarioEntiry(Usuario user){
+
+        User u = User.builder()
+                .userNickName(user.getUserNickName())
+                .person(personaDTOToPersonaEntity(user.getUserPerson()) )
+                .userPassword(user.getUserPassword())
+                .build();
+        return u;
+
+    }
+
+    public Persona personaEntityToPersonaDTO (Person person){
+
+        Persona p = Persona.builder()
+                .fkNamesIdentificationId(person.getFkNamesIdentificationId())
+                .cityId(person.getCityId())
+                .personBirthdate(person.getPersonBirthdate())
+                .personCellphone(person.getPersonCellphone())
+                .personEmail(person.getPersonEmail())
+                .personIdentification(person.getPersonIdentification())
+                .personLastname(person.getPersonLastname())
+                .personName(person.getPersonName())
+                .build();
+        return p;
+    }
+
+    public Person personaDTOToPersonaEntity(Persona person){
+
+        Person p = Person.builder()
+                .fkNamesIdentificationId(person.getFkNamesIdentificationId())
+                .cityId(person.getCityId())
+                .personBirthdate(person.getPersonBirthdate())
+                .personCellphone(person.getPersonCellphone())
+                .personEmail(person.getPersonEmail())
+                .personIdentification(person.getPersonIdentification())
+                .personLastname(person.getPersonLastname())
+                .personName(person.getPersonName())
+                .build();
+
+        return p;
+
+    }
 
 }

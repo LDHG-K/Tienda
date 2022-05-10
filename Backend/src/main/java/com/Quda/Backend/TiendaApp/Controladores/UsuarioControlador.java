@@ -1,5 +1,6 @@
 package com.Quda.Backend.TiendaApp.Controladores;
 
+import com.Quda.Backend.TiendaApp.Dominio.DTOS.Usuario;
 import com.Quda.Backend.TiendaApp.Entidad.User;
 import com.Quda.Backend.TiendaApp.Servicio.ServicioUsuario;
 import lombok.AllArgsConstructor;
@@ -27,13 +28,13 @@ public class UsuarioControlador {
     // ==============================================================================
 
     @GetMapping ("{id}")
-    public ResponseEntity<User> darUsuario (@PathVariable("id") String id){
+    public ResponseEntity<Usuario> darUsuario (@PathVariable("id") String id){
         HttpStatus status = HttpStatus.NOT_FOUND;
         Optional<User> usuario =servicioUsuario.buscarUsuario(id);
         if (!usuario.isEmpty()){
             status= HttpStatus.FOUND;
         }
-        return new ResponseEntity(usuario.get(), status);
+        return new ResponseEntity(servicioUsuario.usuarioEntityToUsuarioDTO(usuario.get()), status);
     }
 
     @DeleteMapping("{id}")
@@ -46,10 +47,11 @@ public class UsuarioControlador {
         return new ResponseEntity(status);
     }
     @PutMapping ("/{id}")
-    public ResponseEntity<HttpStatus> editarUsuarios (@Valid @RequestBody User user, @PathVariable ("id") String id){
+    public ResponseEntity<HttpStatus> editarUsuarios (@Valid @RequestBody Usuario user, @PathVariable ("id") String id){
         HttpStatus status = HttpStatus.OK;
+
         try {
-            Optional<User> usuario =servicioUsuario.editarUsuario(user,id);
+            Optional<User> usuario =servicioUsuario.editarUsuario(servicioUsuario.usuarioDTOToUsuarioEntiry(user),id);
         }catch (RuntimeException e){
             System.out.println(e.getMessage());
             status= HttpStatus.BAD_REQUEST;
@@ -58,10 +60,10 @@ public class UsuarioControlador {
     }
     // LOGIN / REGISTRO =======================================================================
     @PostMapping("Registro")
-    public ResponseEntity<HttpHeaders> crearCuenta (@Valid @RequestBody User usuario){
+    public ResponseEntity<HttpHeaders> crearCuenta (@Valid @RequestBody Usuario usuario){
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
-            if (!servicioUsuario.crearUsuario(usuario).isEmpty()){
+            if (!servicioUsuario.crearUsuario(servicioUsuario.usuarioDTOToUsuarioEntiry(usuario)).isEmpty()){
                 status= HttpStatus.CREATED;
             }
         }

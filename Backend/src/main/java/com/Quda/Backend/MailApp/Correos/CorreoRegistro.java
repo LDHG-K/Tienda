@@ -201,7 +201,7 @@ public class CorreoRegistro {
                 "              <!-- COPY -->\n" +
                 "                <tr>\n" +
                 "                  <td bgcolor=\"#ffffff\" align=\"left\" style=\"padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;\" >\n" +
-                "                    <p style=\"margin: 0;\"><a href=\"http://localhost:8080/Usuarios/Registro/"+token+"\" target=\"_blank\" style=\"color: #E9967A;\">http://localhost:8080/Usuarios/Registro/24bd73ea-de07-475b-8878-f61182e0008c</a></p>\n" +
+                "                    <p style=\"margin: 0;\"><a href=\"http://localhost:8080/Usuarios/Registro/"+token+"\" target=\"_blank\" style=\"color: #E9967A;\">http://localhost:8080/Usuarios/Registro/"+token+"</a></p>\n" +
                 "                  </td>\n" +
                 "                </tr>\n" +
                 "              <!-- COPY -->\n" +
